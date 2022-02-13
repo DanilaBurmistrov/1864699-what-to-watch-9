@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 export default function AddReview(): JSX.Element {
   return (
     <section className="film-card film-card--full">
@@ -24,7 +23,7 @@ export default function AddReview(): JSX.Element {
                 <a href="film-page.html" className="breadcrumbs__link">The Grand Budapest Hotel</a>
               </li>
               <li className="breadcrumbs__item">
-                <a className="breadcrumbs__link">Add review</a>
+                <a className="breadcrumbs__link" href="/">Add review</a>
               </li>
             </ul>
           </nav>
@@ -36,7 +35,7 @@ export default function AddReview(): JSX.Element {
               </div>
             </li>
             <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
+              <a className="user-block__link" href="/">Sign out</a>
             </li>
           </ul>
         </header>
