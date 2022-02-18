@@ -1,4 +1,4 @@
-import FilmCard from '../film-card/film-card';
+import FilmCard from '../../pages/film-card/film-card';
 
 type MainScreenProps = {
   settings: {
