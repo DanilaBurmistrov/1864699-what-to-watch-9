@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
+import { films } from './mocks/films';
 
 const Settings = {
   title: 'The Grand Budapest Hotel poster',
@@ -10,6 +11,9 @@ const Settings = {
 
 ReactDOM.render(
   <React.StrictMode>
-    <App settings={Settings}/>
+    <App
+      settings={Settings}
+      films={films}
+    />
   </React.StrictMode>,
   document.getElementById('root'));
