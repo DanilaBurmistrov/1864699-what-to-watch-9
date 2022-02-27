@@ -1,14 +1,23 @@
-import FilmCard from '../../pages/film-card/film-card';
+import MoviesList from '../movies-list/movies-list';
+import { Films } from '../../types/types';
+import { AppRoute } from '../../const';
+import { useNavigate } from 'react-router-dom';
+import Logo from '../../pages/logo/logo';
+import LogoFooter from '../../pages/logo/logo-footer';
 
 type MainScreenProps = {
-  settings: {
-  title: string;
-  genre: string;
-  year: number;
-  }
+  promoFilm: {
+    name: string,
+    genre: string,
+    released: number,
+  };
+  films: Films;
 }
 
-export default function MainScreen({settings}: MainScreenProps): JSX.Element {
+export default function MainScreen({promoFilm, films}: MainScreenProps): JSX.Element {
+
+  const navigate = useNavigate();
+
   return (
     <>
       <section className="film-card">
@@ -19,13 +28,8 @@ export default function MainScreen({settings}: MainScreenProps): JSX.Element {
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header film-card__head">
-          <div className="logo">
-            <a className="logo__link" href="/">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+
+          <Logo />
 
           <ul className="user-block">
             <li className="user-block__item">
@@ -46,20 +50,24 @@ export default function MainScreen({settings}: MainScreenProps): JSX.Element {
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{settings.title}</h2>
+              <h2 className="film-card__title">{promoFilm.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{settings.genre}</span>
-                <span className="film-card__year">{settings.year}</span>
+                <span className="film-card__genre">{promoFilm.genre}</span>
+                <span className="film-card__year">{promoFilm.released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <button className="btn btn--play film-card__button" type="button"
+                  onClick={() => navigate(AppRoute.Player)}
+                >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button">
+                <button className="btn btn--list film-card__button" type="button"
+                  onClick={() => navigate(AppRoute.MyList)}
+                >
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
                   </svg>
@@ -108,29 +116,7 @@ export default function MainScreen({settings}: MainScreenProps): JSX.Element {
             </li>
           </ul>
 
-          <div className="catalog__films-list">
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-            <FilmCard/>
-          </div>
+          <MoviesList films={films} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
@@ -138,13 +124,8 @@ export default function MainScreen({settings}: MainScreenProps): JSX.Element {
         </section>
 
         <footer className="page-footer">
-          <div className="logo">
-            <a className="logo__link logo__link--light" href="/">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+
+          <LogoFooter />
 
           <div className="copyright">
             <p>© 2019 What to watch Ltd.</p>
