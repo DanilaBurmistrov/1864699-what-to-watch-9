@@ -10,23 +10,23 @@ import SignIn from '../sign-in/sign-in';
 import PrivateRoute from '../../pages/private-route/private-route';
 import { Film, Films } from '../../types/types';
 
-type AppScreenProps = {
-  settings: {
-    title: string;
-    genre: string;
-    year: number;
-  }
+type AppProps = {
+  promoFilm: {
+    name: string,
+    genre: string,
+    released: number,
+  };
   films: Films;
+  film: Film;
 }
 
-export default function App({settings, films}: AppScreenProps): JSX.Element {
-  const [firstFilm] = films;
+export default function App({promoFilm, films, film}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainScreen settings={settings} films={films}/>}
+          element={<MainScreen promoFilm={promoFilm} films={films}/>}
         />
         <Route
           path={AppRoute.SignIn}
@@ -42,15 +42,15 @@ export default function App({settings, films}: AppScreenProps): JSX.Element {
         />
         <Route
           path={AppRoute.MoviePage}
-          element={<MoviePage films={firstFilm as Film}/>}
+          element={<MoviePage film={film}/>}
         />
         <Route
           path={AppRoute.AddReview}
-          element={<AddReview films={firstFilm as Film}/>}
+          element={<AddReview film={film}/>}
         />
         <Route
           path={AppRoute.Player}
-          element={<Player films={firstFilm as Film}/>}
+          element={<Player film={film}/>}
         />
         <Route
           path="*"

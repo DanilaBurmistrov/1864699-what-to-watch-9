@@ -6,15 +6,15 @@ import Logo from '../../pages/logo/logo';
 import LogoFooter from '../../pages/logo/logo-footer';
 
 type MainScreenProps = {
-  settings: {
-  title: string;
-  genre: string;
-  year: number;
-  }
+  promoFilm: {
+    name: string,
+    genre: string,
+    released: number,
+  };
   films: Films;
 }
 
-export default function MainScreen({settings, films}: MainScreenProps): JSX.Element {
+export default function MainScreen({promoFilm, films}: MainScreenProps): JSX.Element {
 
   const navigate = useNavigate();
 
@@ -50,10 +50,10 @@ export default function MainScreen({settings, films}: MainScreenProps): JSX.Elem
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{settings.title}</h2>
+              <h2 className="film-card__title">{promoFilm.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{settings.genre}</span>
-                <span className="film-card__year">{settings.year}</span>
+                <span className="film-card__genre">{promoFilm.genre}</span>
+                <span className="film-card__year">{promoFilm.released}</span>
               </p>
 
               <div className="film-card__buttons">

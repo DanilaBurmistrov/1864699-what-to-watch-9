@@ -2,17 +2,17 @@ import AddCommentForm from '../../pages/add-comment-form/add-comment-form';
 import Logo from '../../pages/logo/logo';
 import { Film } from '../../types/types';
 
-type FilmsProps = {
-  films: Film;
+type AddReviewProps = {
+  film: Film;
 };
 
-export default function AddReview(props: FilmsProps): JSX.Element {
+export default function AddReview(props: AddReviewProps): JSX.Element {
 
-  const {films} = props;
+  const {film} = props;
   const {
     name,
     posterImage,
-  } = films;
+  } = film;
 
   return (
     <section className="film-card film-card--full">

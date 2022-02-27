@@ -2,21 +2,21 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { Film } from '../../types/types';
 
-type FilmsProps = {
-  films: Film;
+type PlayerProps = {
+  film: Film;
 };
 
-export default function Player(props: FilmsProps): JSX.Element {
+export default function Player(props: PlayerProps): JSX.Element {
 
   const navigate = useNavigate();
 
-  const {films} = props;
+  const {film} = props;
   const {
     name,
     videoLink,
     posterImage,
     runTime,
-  } = films;
+  } = film;
 
   return (
     <div className="player">
