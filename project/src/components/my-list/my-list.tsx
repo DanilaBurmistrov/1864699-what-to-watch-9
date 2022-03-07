@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import FilmCard from '../../pages/film-card/film-card';
 import Logo from '../../pages/logo/logo';
 import LogoFooter from '../../pages/logo/logo-footer';
@@ -6,8 +5,6 @@ import { Films } from '../../types/types';
 
 
 export default function MyList({films}: {films: Films}): JSX.Element {
-
-  const [activeFilmId, setActiveFilmId] = useState<number | null>(null);
 
   return (
     <div className="user-page">
@@ -33,7 +30,7 @@ export default function MyList({films}: {films: Films}): JSX.Element {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <div className="catalog__films-list">
-          {films.map((film) => <FilmCard key={film.id} film={film} isActive={film.id === activeFilmId} onHover={setActiveFilmId}/>)}
+          {films.map((film) => <FilmCard key={film.id} film={film} />)}
         </div>
       </section>
 
