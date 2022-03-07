@@ -23,7 +23,7 @@ export default function VideoPlayer ({isPlaying, film}: VideoPlayerProps): JSX.E
     videoRef.current.currentTime = 0;
     videoRef.current.pause();
     videoRef.current.load();
-  }, [isPlaying, film.posterImage]);
+  }, [isPlaying]);
 
   return (
     <video

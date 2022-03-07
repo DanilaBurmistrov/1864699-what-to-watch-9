@@ -1,36 +1,36 @@
 import { Film } from '../../types/types';
 import { Link } from 'react-router-dom';
-import VideoPlayer from '../video-player/video-player';
-import {useState} from 'react';
+import VideoPlayer from '../../components/video-player/video-player';
+import {useRef, useState} from 'react';
 import {PLAYER_TIME_OUT} from '../../const';
 
 type FilmCardProps = {
   film: Film,
 };
 
-let timer: number | null = null;
-
 export default function FilmCard({film}: FilmCardProps): JSX.Element {
+
+  const timer = useRef<number | null>(null);
 
   const [isPlaying, setIsPlaying] = useState<number | null>(null);
 
   const onMouseEnter = () => {
-    timer = window.setTimeout(() => setIsPlaying(isPlaying === film.id ? -1 : film.id), PLAYER_TIME_OUT);
+    timer.current = window.setTimeout(() => setIsPlaying(isPlaying === film.id ? null : film.id), PLAYER_TIME_OUT);
   };
 
   const onMouseLeave = () => {
-    if (timer) {
-      clearTimeout(timer);
+    if (timer.current) {
+      clearTimeout(timer.current);
     }
     setIsPlaying(null);
   };
 
   return (
-    <article className="small-film-card catalog__films-card">
-      <div className="small-film-card__image"
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-      >
+    <article className="small-film-card catalog__films-card"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <div className="small-film-card__image">
         <VideoPlayer isPlaying = {film.id === isPlaying} film = {film} />
       </div>
       <h3 className="small-film-card__title">
