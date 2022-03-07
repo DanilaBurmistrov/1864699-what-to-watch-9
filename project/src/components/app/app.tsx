@@ -11,11 +11,7 @@ import PrivateRoute from '../../pages/private-route/private-route';
 import { Film, Films } from '../../types/types';
 
 type AppProps = {
-  promoFilm: {
-    name: string,
-    genre: string,
-    released: number,
-  };
+  promoFilm: Film;
   films: Films;
   film: Film;
 }
