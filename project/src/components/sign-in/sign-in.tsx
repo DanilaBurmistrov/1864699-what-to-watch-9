@@ -1,5 +1,5 @@
-import Logo from '../../pages/logo/logo';
-import LogoFooter from '../../pages/logo/logo-footer';
+import Logo from '../pages/logo/logo';
+import LogoFooter from '../pages/logo/logo-footer';
 
 export default function SignIn(): JSX.Element {
   return (

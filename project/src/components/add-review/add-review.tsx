@@ -1,5 +1,5 @@
-import AddCommentForm from '../../pages/add-comment-form/add-comment-form';
-import Logo from '../../pages/logo/logo';
+import AddCommentForm from '../pages/add-comment-form/add-comment-form';
+import Logo from '../pages/logo/logo';
 import { Film } from '../../types/types';
 
 type AddReviewProps = {

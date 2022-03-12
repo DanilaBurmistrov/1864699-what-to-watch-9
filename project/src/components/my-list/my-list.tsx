@@ -1,6 +1,6 @@
-import FilmCard from '../../pages/film-card/film-card';
-import Logo from '../../pages/logo/logo';
-import LogoFooter from '../../pages/logo/logo-footer';
+import FilmCard from '../pages/film-card/film-card';
+import Logo from '../pages/logo/logo';
+import LogoFooter from '../pages/logo/logo-footer';
 import { Films } from '../../types/types';
 
 
