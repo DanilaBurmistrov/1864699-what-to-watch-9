@@ -1,8 +1,8 @@
 import { Film } from '../../types/types';
 import { AppRoute } from '../../const';
 import { Link, useNavigate } from 'react-router-dom';
-import Logo from '../../pages/logo/logo';
-import LogoFooter from '../../pages/logo/logo-footer';
+import Logo from '../pages/logo/logo';
+import LogoFooter from '../pages/logo/logo-footer';
 
 type MoviePageProps = {
   film: Film;

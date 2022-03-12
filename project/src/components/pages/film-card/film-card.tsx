@@ -1,8 +1,8 @@
-import { Film } from '../../types/types';
+import { Film } from '../../../types/types';
 import { Link } from 'react-router-dom';
-import VideoPlayer from '../../components/video-player/video-player';
+import VideoPlayer from '../../video-player/video-player';
 import {useRef, useState} from 'react';
-import {PLAYER_TIME_OUT} from '../../const';
+import {PLAYER_TIME_OUT} from '../../../const';
 
 type FilmCardProps = {
   film: Film,
