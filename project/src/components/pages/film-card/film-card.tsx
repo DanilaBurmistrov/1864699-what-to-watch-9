@@ -1,8 +1,8 @@
 import { Film } from '../../../types/types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import VideoPlayer from '../../video-player/video-player';
 import {useRef, useState} from 'react';
-import {PLAYER_TIME_OUT} from '../../../const';
+import { PLAYER_TIME_OUT} from '../../../const';
 
 type FilmCardProps = {
   film: Film,
@@ -11,6 +11,7 @@ type FilmCardProps = {
 export default function FilmCard({film}: FilmCardProps): JSX.Element {
 
   const timer = useRef<number | null>(null);
+  const navigate = useNavigate();
 
   const [isPlaying, setIsPlaying] = useState<number | null>(null);
 
@@ -29,6 +30,7 @@ export default function FilmCard({film}: FilmCardProps): JSX.Element {
     <article className="small-film-card catalog__films-card"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={() => navigate(`/films/${film.id}`)}
     >
       <div className="small-film-card__image">
         <VideoPlayer isPlaying = {film.id === isPlaying} film = {film} />

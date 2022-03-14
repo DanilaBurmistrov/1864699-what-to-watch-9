@@ -13,7 +13,11 @@ export default function GenresList ({genres}: GenresListProps): JSX.Element {
   return (
     <>
       {genres.map((genre) =>(
-        <li key={genre} onClick={() => dispatch(setActiveGenre(genre))} className={`catalog__genres-item ${genre === activeGenre ? ' catalog__genres-item--active' : ''}`}>
+        <li
+          key={genre}
+          onClick={() => dispatch(setActiveGenre(genre))}
+          className={`catalog__genres-item ${genre === activeGenre ? ' catalog__genres-item--active' : ''}`}
+        >
           <Link to={''} className="catalog__genres-link">{genre}</Link>
         </li>),
       )}

@@ -1,24 +1,22 @@
 import AddCommentForm from '../pages/add-comment-form/add-comment-form';
 import Logo from '../pages/logo/logo';
 import { Film } from '../../types/types';
+import { Link, useParams } from 'react-router-dom';
 
 type AddReviewProps = {
-  film: Film;
+  films: Film[];
 };
 
-export default function AddReview(props: AddReviewProps): JSX.Element {
+export default function AddReview({films}: AddReviewProps): JSX.Element {
 
-  const {film} = props;
-  const {
-    name,
-    posterImage,
-  } = film;
+  const params = useParams();
+  const film = films.find((item) => item.id === Number(params.id));
 
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={posterImage} alt={name} />
+          <img src={film?.backgroundImage} alt={film?.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -30,10 +28,10 @@ export default function AddReview(props: AddReviewProps): JSX.Element {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">{name}</a>
+                <Link to={`/films/${film?.id}`} className="breadcrumbs__link">{film?.name}</Link>
               </li>
               <li className="breadcrumbs__item">
-                <a className="breadcrumbs__link" href="/">Add review</a>
+                <Link className="breadcrumbs__link" to={`/films/${film?.id}/review`}>Add review</Link>
               </li>
             </ul>
           </nav>
@@ -51,7 +49,7 @@ export default function AddReview(props: AddReviewProps): JSX.Element {
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src={posterImage} alt={name} width="218" height="327" />
+          <img src={film?.posterImage} alt={film?.name} width="218" height="327" />
         </div>
       </div>
 

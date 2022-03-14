@@ -1,36 +1,49 @@
 import MoviesList from '../movies-list/movies-list';
-import { Film, Films } from '../../types/types';
+import { Film } from '../../types/types';
 import { AppRoute, DEFAULT_ACTIVE_GENRE } from '../../const';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../pages/logo/logo';
 import LogoFooter from '../pages/logo/logo-footer';
 import GenresList from '../genres-list/genres-list';
 import { useEffect, useState } from 'react';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchPromoFilmAction } from '../../store/api-action';
+import { State } from '../../types/state';
 
-type MainScreenProps = {
-  promoFilm: Film;
-  films: Films;
-}
 
-export default function MainScreen({promoFilm, films}: MainScreenProps): JSX.Element {
+export default function MainScreen(): JSX.Element {
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [genres, setGenres] = useState<string[]>([]);
+  const films = useAppSelector((state: State) => state.films);
+  const promoFilm = useAppSelector((state: State) => state.promoFilm);
   const activeGenre = useAppSelector((state) => state.activeGenre);
-  const filmsList = films.filter(({genre}) => activeGenre === 'All genres' || activeGenre === genre);
+  const filmsList = (activeGenre === 'All genres') ? films : films.filter(({genre}) => activeGenre === genre);
 
   useEffect(() => {
     setGenres([DEFAULT_ACTIVE_GENRE, ...new Set(films.map((film) => film.genre))]);
   }, [films]);
 
+  useEffect(() => {
+    dispatch(fetchPromoFilmAction());
+  });
+
+  const {
+    id,
+    name,
+    genre,
+    released,
+    posterImage,
+    backgroundImage,
+  } = promoFilm as Film;
 
   return (
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={promoFilm.posterImage} alt={promoFilm.name} />
+          <img src={backgroundImage} alt={name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -54,19 +67,19 @@ export default function MainScreen({promoFilm, films}: MainScreenProps): JSX.Ele
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src={promoFilm.previewImage} alt={promoFilm.name} width="218" height="327" />
+              <img src={posterImage} alt={name} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{promoFilm.name}</h2>
+              <h2 className="film-card__title">{name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{promoFilm.genre}</span>
-                <span className="film-card__year">{promoFilm.released}</span>
+                <span className="film-card__genre">{genre}</span>
+                <span className="film-card__year">{released}</span>
               </p>
 
               <div className="film-card__buttons">
                 <button className="btn btn--play film-card__button" type="button"
-                  onClick={() => navigate(AppRoute.Player)}
+                  onClick={() => navigate(`/player/${id}`)}
                 >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>

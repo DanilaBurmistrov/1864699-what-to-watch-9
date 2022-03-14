@@ -1,10 +1,13 @@
-import FilmCard from '../pages/film-card/film-card';
 import Logo from '../pages/logo/logo';
 import LogoFooter from '../pages/logo/logo-footer';
-import { Films } from '../../types/types';
+import { Film } from '../../types/types';
+import MoviesList from '../movies-list/movies-list';
 
+type MyListProps = {
+  films: Film[],
+}
 
-export default function MyList({films}: {films: Films}): JSX.Element {
+export default function MyList({films}: MyListProps): JSX.Element {
 
   return (
     <div className="user-page">
@@ -30,7 +33,7 @@ export default function MyList({films}: {films: Films}): JSX.Element {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <div className="catalog__films-list">
-          {films.map((film) => <FilmCard key={film.id} film={film} />)}
+          <MoviesList films = {films}/>
         </div>
       </section>
 

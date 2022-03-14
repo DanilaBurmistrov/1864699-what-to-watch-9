@@ -1,31 +1,36 @@
 import { Film } from '../../types/types';
 import { AppRoute } from '../../const';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Logo from '../pages/logo/logo';
 import LogoFooter from '../pages/logo/logo-footer';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchFilmAction } from '../../store/api-action';
+import { useEffect } from 'react';
 
-type MoviePageProps = {
-  film: Film;
-};
-
-export default function MoviePage(props: MoviePageProps): JSX.Element {
+export default function MoviePage(): JSX.Element {
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const params = useParams();
+  const filmId = Number(params.id);
+  const film = useAppSelector((state) => state.film);
 
-  const {film} = props;
+  useEffect(() => {
+    dispatch(fetchFilmAction(filmId));
+  }, [dispatch, filmId]);
+
   const {
     id,
     name,
-    previewImage,
-    description,
-    rating,
-    levelRating,
-    scoresCount,
-    director,
-    starring,
     genre,
     released,
-  } = film;
+    posterImage,
+    rating,
+    scoresCount,
+    director,
+    description,
+    starring,
+  } = film as Film;
 
   return (
     <>
@@ -87,7 +92,7 @@ export default function MoviePage(props: MoviePageProps): JSX.Element {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={previewImage} alt={name} width="218"
+              <img src={posterImage} alt={name} width="218"
                 height="327"
               />
             </div>
@@ -110,7 +115,7 @@ export default function MoviePage(props: MoviePageProps): JSX.Element {
               <div className="film-rating">
                 <div className="film-rating__score">{rating}</div>
                 <p className="film-rating__meta">
-                  <span className="film-rating__level">{levelRating}</span>
+                  <span className="film-rating__level">{rating}</span>
                   <span className="film-rating__count">{scoresCount}</span>
                 </p>
               </div>
