@@ -9,7 +9,6 @@ export type Film = {
   previewVideoLink: string,
   description: string,
   rating: number,
-  levelRating: string,
   scoresCount: number,
   director: string,
   starring: string[],
@@ -19,4 +18,3 @@ export type Film = {
   isFavorite: boolean,
 };
 
-export type Films = Film[];

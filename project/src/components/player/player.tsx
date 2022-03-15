@@ -1,26 +1,21 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { Film } from '../../types/types';
 
 type PlayerProps = {
-  film: Film;
+  films: Film[];
 };
 
-export default function Player(props: PlayerProps): JSX.Element {
+export default function Player({films}: PlayerProps): JSX.Element {
 
   const navigate = useNavigate();
-
-  const {film} = props;
-  const {
-    name,
-    videoLink,
-    posterImage,
-    runTime,
-  } = film;
+  const params = useParams();
+  const filmId = Number(params.id);
+  const film = films.find((item) => item.id === filmId);
 
   return (
     <div className="player">
-      <video src={videoLink} className="player__video" poster={posterImage}></video>
+      <video src={film?.videoLink} className="player__video" poster={film?.posterImage}></video>
 
       <button type="button" className="player__exit"
         onClick={() => navigate(AppRoute.Main)}
@@ -33,7 +28,7 @@ export default function Player(props: PlayerProps): JSX.Element {
             <progress className="player__progress" value="30" max="100"></progress>
             <div className="player__toggler" style={{left: '30%'}}>Toggler</div>
           </div>
-          <div className="player__time-value">{runTime}</div>
+          <div className="player__time-value">{film?.runTime}</div>
         </div>
 
         <div className="player__controls-row">
@@ -43,7 +38,7 @@ export default function Player(props: PlayerProps): JSX.Element {
             </svg>
             <span>Play</span>
           </button>
-          <div className="player__name">{name}</div>
+          <div className="player__name">{film?.name}</div>
 
           <button type="button" className="player__full-screen">
             <svg viewBox="0 0 27 27" width="27" height="27">

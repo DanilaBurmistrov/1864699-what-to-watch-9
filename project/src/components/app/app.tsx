@@ -8,21 +8,27 @@ import MyList from '../my-list/my-list';
 import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
 import PrivateRoute from '../pages/private-route/private-route';
-import { Film, Films } from '../../types/types';
+import { useAppSelector } from '../../hooks';
+import LoadingScreen from '../loading-screen/loading-screen';
 
-type AppProps = {
-  promoFilm: Film;
-  films: Films;
-  film: Film;
-}
 
-export default function App({promoFilm, films, film}: AppProps): JSX.Element {
+export default function App(): JSX.Element {
+
+  const {isDataLoaded} = useAppSelector((state) => state);
+  const films = useAppSelector((state) => state.films);
+
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainScreen promoFilm={promoFilm} films={films}/>}
+          element={<MainScreen />}
         />
         <Route
           path={AppRoute.SignIn}
@@ -38,15 +44,15 @@ export default function App({promoFilm, films, film}: AppProps): JSX.Element {
         />
         <Route
           path={AppRoute.MoviePage}
-          element={<MoviePage film={film}/>}
+          element={<MoviePage />}
         />
         <Route
           path={AppRoute.AddReview}
-          element={<AddReview film={film}/>}
+          element={<AddReview films={films}/>}
         />
         <Route
           path={AppRoute.Player}
-          element={<Player film={film}/>}
+          element={<Player films={films}/>}
         />
         <Route
           path="*"
