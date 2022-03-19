@@ -1,11 +1,11 @@
-import { Film } from '../../types/types';
 import { AppRoute } from '../../const';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Logo from '../pages/logo/logo';
 import LogoFooter from '../pages/logo/logo-footer';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchFilmAction } from '../../store/api-action';
+import { fetchFilm } from '../../store/api-action';
 import { useEffect } from 'react';
+import { getFilmById } from '../../store/selectors';
 
 export default function MoviePage(): JSX.Element {
 
@@ -13,24 +13,11 @@ export default function MoviePage(): JSX.Element {
   const dispatch = useAppDispatch();
   const params = useParams();
   const filmId = Number(params.id);
-  const film = useAppSelector((state) => state.film);
+  const film = useAppSelector(getFilmById(filmId));
 
   useEffect(() => {
-    dispatch(fetchFilmAction(filmId));
+    dispatch(fetchFilm(filmId));
   }, [dispatch, filmId]);
-
-  const {
-    id,
-    name,
-    genre,
-    released,
-    posterImage,
-    rating,
-    scoresCount,
-    director,
-    description,
-    starring,
-  } = film as Film;
 
   return (
     <>
@@ -60,15 +47,15 @@ export default function MoviePage(): JSX.Element {
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{name}</h2>
+              <h2 className="film-card__title">{film?.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{genre}</span>
-                <span className="film-card__year">{released}</span>
+                <span className="film-card__genre">{film?.genre}</span>
+                <span className="film-card__year">{film?.released}</span>
               </p>
 
               <div className="film-card__buttons">
                 <button className="btn btn--play film-card__button" type="button"
-                  onClick={() => navigate(`/player/${id}`)}
+                  onClick={() => navigate(`/player/${film?.id}`)}
                 >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
@@ -83,7 +70,7 @@ export default function MoviePage(): JSX.Element {
                   </svg>
                   <span>My list</span>
                 </button>
-                <Link to={`/films/${id}}/review`} className="btn film-card__button">Add review</Link>
+                <Link to={`/films/${film?.id}}/review`} className="btn film-card__button">Add review</Link>
               </div>
             </div>
           </div>
@@ -92,7 +79,7 @@ export default function MoviePage(): JSX.Element {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={posterImage} alt={name} width="218"
+              <img src={film?.posterImage} alt={film?.name} width="218"
                 height="327"
               />
             </div>
@@ -113,19 +100,17 @@ export default function MoviePage(): JSX.Element {
               </nav>
 
               <div className="film-rating">
-                <div className="film-rating__score">{rating}</div>
+                <div className="film-rating__score">{film?.rating}</div>
                 <p className="film-rating__meta">
-                  <span className="film-rating__level">{rating}</span>
-                  <span className="film-rating__count">{scoresCount}</span>
+                  <span className="film-rating__level">{film?.rating}</span>
+                  <span className="film-rating__count">{film?.scoresCount}</span>
                 </p>
               </div>
 
               <div className="film-card__text">
-                <p>{description}</p>
-                <p className="film-card__director"><strong>Director: {director}</strong></p>
-                <p className="film-card__starring">
-                  <div>Starring: {starring}</div>
-                </p>
+                <p>{film?.description}</p>
+                <p className="film-card__director"><strong>Director: {film?.director}</strong></p>
+                <p className="film-card__starring">Starring: {film?.starring}</p>
               </div>
             </div>
           </div>

@@ -1,14 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { Film } from '../../types/types';
+import { useAppSelector } from '../../hooks';
 
-type PlayerProps = {
-  films: Film[];
-};
 
-export default function Player({films}: PlayerProps): JSX.Element {
+export default function Player(): JSX.Element {
 
   const navigate = useNavigate();
+  const {films} = useAppSelector((state) => state);
   const params = useParams();
   const filmId = Number(params.id);
   const film = films.find((item) => item.id === filmId);

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import AddReview from '../add-review/add-review';
 import Error from '../pages/error/error';
@@ -9,22 +9,19 @@ import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
 import PrivateRoute from '../pages/private-route/private-route';
 import { useAppSelector } from '../../hooks';
-import LoadingScreen from '../loading-screen/loading-screen';
+import { browserHistory } from '../../browser-history';
+import HistoryRouter from '../history-route/history-route';
 
+export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
+  authorizationStatus === AuthorizationStatus.Unknown;
 
 export default function App(): JSX.Element {
 
-  const {isDataLoaded} = useAppSelector((state) => state);
+  const {authorizationStatus} = useAppSelector((state) => state);
   const films = useAppSelector((state) => state.films);
 
-  if (!isDataLoaded) {
-    return (
-      <LoadingScreen />
-    );
-  }
-
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={AppRoute.Main}
@@ -37,7 +34,7 @@ export default function App(): JSX.Element {
         <Route
           path={AppRoute.MyList}
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+            <PrivateRoute authorizationStatus={authorizationStatus}>
               <MyList films={films} />
             </PrivateRoute>
           }
@@ -48,17 +45,17 @@ export default function App(): JSX.Element {
         />
         <Route
           path={AppRoute.AddReview}
-          element={<AddReview films={films}/>}
+          element={<AddReview />}
         />
         <Route
           path={AppRoute.Player}
-          element={<Player films={films}/>}
+          element={<Player />}
         />
         <Route
           path="*"
           element={<Error />}
         />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }

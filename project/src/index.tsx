@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom';
 import App from './components/app/app';
 import {Provider} from 'react-redux';
 import {store} from './store';
-import { fetchFilmsAction } from './store/api-action';
+import { fetchCheckAuth } from './store/api-action';
+import ErrorMessage from './components/error-message/error-message';
 
-store.dispatch(fetchFilmsAction());
+store.dispatch(fetchCheckAuth());
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store = {store}>
+      <ErrorMessage />
       <App />
     </Provider>
   </React.StrictMode>,

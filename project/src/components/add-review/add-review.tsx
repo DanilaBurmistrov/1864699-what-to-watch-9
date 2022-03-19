@@ -1,16 +1,14 @@
 import AddCommentForm from '../pages/add-comment-form/add-comment-form';
 import Logo from '../pages/logo/logo';
-import { Film } from '../../types/types';
 import { Link, useParams } from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
+import { getFilmById } from '../../store/selectors';
 
-type AddReviewProps = {
-  films: Film[];
-};
 
-export default function AddReview({films}: AddReviewProps): JSX.Element {
+export default function AddReview(): JSX.Element {
 
   const params = useParams();
-  const film = films.find((item) => item.id === Number(params.id));
+  const film = useAppSelector(getFilmById(Number(params.id)));
 
   return (
     <section className="film-card film-card--full">
