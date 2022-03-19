@@ -1,13 +1,15 @@
 import MoviesList from '../movies-list/movies-list';
-import { AppRoute, DEFAULT_ACTIVE_GENRE } from '../../const';
+import { AppRoute } from '../../const';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../pages/logo/logo';
 import LogoFooter from '../pages/logo/logo-footer';
 import GenresList from '../genres-list/genres-list';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchPromoFilm } from '../../store/api-action';
+import { fetchFilms, fetchPromoFilm } from '../../store/api-action';
 import { State } from '../../types/state';
+import UserBlock from '../user-block/user-block';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 
 export default function MainScreen(): JSX.Element {
@@ -15,18 +17,16 @@ export default function MainScreen(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [genres, setGenres] = useState<string[]>([]);
+  const genres = useAppSelector((state: State) => state.genres);
   const films = useAppSelector((state: State) => state.films);
   const promoFilm = useAppSelector((state: State) => state.promoFilm);
   const activeGenre = useAppSelector((state) => state.activeGenre);
   const filmsList = (activeGenre === 'All genres') ? films : films.filter(({genre}) => activeGenre === genre);
-
-  useEffect(() => {
-    setGenres([DEFAULT_ACTIVE_GENRE, ...new Set(films.map((film) => film.genre))]);
-  }, [films]);
+  const {isDataLoaded} = useAppSelector((state) => state);
 
   useEffect(() => {
     dispatch(fetchPromoFilm());
+    dispatch(fetchFilms());
   }, [dispatch]);
 
   return (
@@ -42,16 +42,8 @@ export default function MainScreen(): JSX.Element {
 
           <Logo />
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link" href="/">Sign out</a>
-            </li>
-          </ul>
+          <UserBlock />
+
         </header>
 
         <div className="film-card__wrap">
@@ -94,11 +86,13 @@ export default function MainScreen(): JSX.Element {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ul className="catalog__genres-list">
-            <GenresList genres={genres} />
-          </ul>
-
-          <MoviesList films={filmsList} />
+          {!isDataLoaded ? <LoadingScreen /> :
+            <>
+              <ul className="catalog__genres-list">
+                <GenresList genres={genres} />
+              </ul>
+              <MoviesList films={filmsList} />
+            </>}
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>

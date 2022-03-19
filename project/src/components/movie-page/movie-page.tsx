@@ -5,6 +5,7 @@ import LogoFooter from '../pages/logo/logo-footer';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilm } from '../../store/api-action';
 import { useEffect } from 'react';
+import { getFilmById } from '../../store/selectors';
 
 export default function MoviePage(): JSX.Element {
 
@@ -12,7 +13,7 @@ export default function MoviePage(): JSX.Element {
   const dispatch = useAppDispatch();
   const params = useParams();
   const filmId = Number(params.id);
-  const film = useAppSelector((state) => state.film);
+  const film = useAppSelector(getFilmById(filmId));
 
   useEffect(() => {
     dispatch(fetchFilm(filmId));

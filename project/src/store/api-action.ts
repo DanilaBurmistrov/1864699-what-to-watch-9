@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api, store } from '.';
-import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
+import { APIRoute, AppRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { errorHandle } from '../services/error-handle';
-import { saveToken } from '../services/token';
+import { dropToken, saveToken } from '../services/token';
 import { AuthData, Film, UserData } from '../types/types';
-import { loadFilm, loadFilms, loadPromoFilm, requireAuthorization, setError } from './action';
+import { loadFilm, loadFilms, loadPromoFilm, redirectToRoute, requireAuthorization, setError } from './action';
 
 export const fetchFilms = createAsyncThunk(
   'data/fetchFilms',
@@ -60,9 +60,23 @@ export const fetchLogin = createAsyncThunk(
       const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
       saveToken(token);
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      store.dispatch(redirectToRoute(AppRoute.Main));
     } catch(error) {
       errorHandle(error);
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    }
+  },
+);
+
+export const fetchLogout = createAsyncThunk(
+  'user/logout',
+  async () => {
+    try {
+      await api.delete(APIRoute.Logout);
+      dropToken();
+      store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    } catch (error) {
+      errorHandle(error);
     }
   },
 );
