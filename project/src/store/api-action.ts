@@ -1,10 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api, store } from '.';
-import { APIRoute } from '../const';
-import { Film } from '../types/types';
-import { loadFilm, loadFilms, loadPromoFilm } from './action';
+import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
+import { errorHandle } from '../services/error-handle';
+import { saveToken } from '../services/token';
+import { AuthData, Film, UserData } from '../types/types';
+import { loadFilm, loadFilms, loadPromoFilm, requireAuthorization, setError } from './action';
 
-export const fetchFilmsAction = createAsyncThunk(
+export const fetchFilms = createAsyncThunk(
   'data/fetchFilms',
   async () => {
     const {data} = await api.get<Film[]>(APIRoute.Films);
@@ -12,7 +14,7 @@ export const fetchFilmsAction = createAsyncThunk(
   },
 );
 
-export const fetchFilmAction = createAsyncThunk(
+export const fetchFilm = createAsyncThunk(
   'data/fetchFilm',
   async (filmId: number) => {
     const {data} = await api.get<Film>(`${APIRoute.Film}${filmId}`);
@@ -20,10 +22,47 @@ export const fetchFilmAction = createAsyncThunk(
   },
 );
 
-export const fetchPromoFilmAction = createAsyncThunk(
+export const fetchPromoFilm = createAsyncThunk(
   'data/fetchPromoFilm',
   async () => {
     const {data} = await api.get<Film>(APIRoute.PromoFilm);
     store.dispatch(loadPromoFilm(data));
+  },
+);
+
+export const clearError = createAsyncThunk(
+  'game/clearError',
+  () => {
+    setTimeout(
+      () => store.dispatch(setError('')),
+      TIMEOUT_SHOW_ERROR,
+    );
+  },
+);
+
+export const fetchCheckAuth = createAsyncThunk(
+  'user/checkAuth',
+  async () => {
+    try {
+      await api.get(APIRoute.Login);
+      store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    } catch(error) {
+      errorHandle(error);
+      store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    }
+  },
+);
+
+export const fetchLogin = createAsyncThunk(
+  'user/login',
+  async ({login: email, password}: AuthData) => {
+    try {
+      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
+      saveToken(token);
+      store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    } catch(error) {
+      errorHandle(error);
+      store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    }
   },
 );

@@ -1,15 +1,13 @@
 import AddCommentForm from '../pages/add-comment-form/add-comment-form';
 import Logo from '../pages/logo/logo';
-import { Film } from '../../types/types';
 import { Link, useParams } from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
 
-type AddReviewProps = {
-  films: Film[];
-};
 
-export default function AddReview({films}: AddReviewProps): JSX.Element {
+export default function AddReview(): JSX.Element {
 
   const params = useParams();
+  const {films} = useAppSelector((state) => state);
   const film = films.find((item) => item.id === Number(params.id));
 
   return (

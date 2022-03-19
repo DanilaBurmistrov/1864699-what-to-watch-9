@@ -11,13 +11,15 @@ import PrivateRoute from '../pages/private-route/private-route';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../loading-screen/loading-screen';
 
+export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
+  authorizationStatus === AuthorizationStatus.Unknown;
 
 export default function App(): JSX.Element {
 
-  const {isDataLoaded} = useAppSelector((state) => state);
+  const {authorizationStatus, isDataLoaded} = useAppSelector((state) => state);
   const films = useAppSelector((state) => state.films);
 
-  if (!isDataLoaded) {
+  if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return (
       <LoadingScreen />
     );
@@ -37,7 +39,7 @@ export default function App(): JSX.Element {
         <Route
           path={AppRoute.MyList}
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+            <PrivateRoute authorizationStatus={authorizationStatus}>
               <MyList films={films} />
             </PrivateRoute>
           }
@@ -48,11 +50,11 @@ export default function App(): JSX.Element {
         />
         <Route
           path={AppRoute.AddReview}
-          element={<AddReview films={films}/>}
+          element={<AddReview />}
         />
         <Route
           path={AppRoute.Player}
-          element={<Player films={films}/>}
+          element={<Player />}
         />
         <Route
           path="*"
