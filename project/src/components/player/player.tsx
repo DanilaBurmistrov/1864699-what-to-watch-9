@@ -1,15 +1,15 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
+import { getFilmById } from '../../store/selectors';
 
 
 export default function Player(): JSX.Element {
 
   const navigate = useNavigate();
-  const {films} = useAppSelector((state) => state);
   const params = useParams();
   const filmId = Number(params.id);
-  const film = films.find((item) => item.id === filmId);
+  const film = useAppSelector(getFilmById(filmId));
 
   return (
     <div className="player">

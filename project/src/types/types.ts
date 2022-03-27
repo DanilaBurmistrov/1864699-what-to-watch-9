@@ -24,11 +24,11 @@ export type AuthData = {
 };
 
 export type UserData = {
-  avatarUrl: string
-  email: string
-  id: number
-  name: string
-  token: string
+  avatarUrl: string;
+  email: string;
+  id: number;
+  name: string;
+  token: string;
 };
 
 export type ErrorType = unknown;

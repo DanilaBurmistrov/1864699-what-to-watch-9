@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import AddReview from '../add-review/add-review';
 import Error from '../pages/error/error';
 import MainScreen from '../main-screen/main-screen';
@@ -11,14 +11,12 @@ import PrivateRoute from '../pages/private-route/private-route';
 import { useAppSelector } from '../../hooks';
 import { browserHistory } from '../../browser-history';
 import HistoryRouter from '../history-route/history-route';
+import { getFilms } from '../../store/selectors';
 
-export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
-  authorizationStatus === AuthorizationStatus.Unknown;
 
 export default function App(): JSX.Element {
 
-  const {authorizationStatus} = useAppSelector((state) => state);
-  const films = useAppSelector((state) => state.films);
+  const films = useAppSelector(getFilms);
 
   return (
     <HistoryRouter history={browserHistory}>
@@ -34,7 +32,7 @@ export default function App(): JSX.Element {
         <Route
           path={AppRoute.MyList}
           element={
-            <PrivateRoute authorizationStatus={authorizationStatus}>
+            <PrivateRoute >
               <MyList films={films} />
             </PrivateRoute>
           }

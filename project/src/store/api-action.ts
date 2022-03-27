@@ -1,16 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api, store } from '.';
 import { APIRoute, AppRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
-import { errorHandle } from '../services/error-handle';
+import { handleError } from '../services/error-handle';
 import { dropToken, saveToken } from '../services/token';
 import { AuthData, Film, UserData } from '../types/types';
-import { loadFilm, loadFilms, loadPromoFilm, redirectToRoute, requireAuthorization, setError } from './action';
+import { redirectToRoute } from './action';
+import { loadFilms, loadFilm, loadPromoFilm, setError } from './film-data/film-data';
+import { requireAuthorization } from './user-process/user-process';
 
-export const fetchFilms = createAsyncThunk(
+export const fetchFilms = createAsyncThunk<void, unknown, {extra: typeof api}>(
   'data/fetchFilms',
-  async () => {
-    const {data} = await api.get<Film[]>(APIRoute.Films);
-    store.dispatch(loadFilms(data));
+  async (_:unknown, {dispatch, extra}) => {
+    const {data} = await extra.get<Film[]>(APIRoute.Films);
+    dispatch(loadFilms(data));
   },
 );
 
@@ -31,7 +33,7 @@ export const fetchPromoFilm = createAsyncThunk(
 );
 
 export const clearError = createAsyncThunk(
-  'game/clearError',
+  'data/clearError',
   () => {
     setTimeout(
       () => store.dispatch(setError('')),
@@ -47,7 +49,7 @@ export const fetchCheckAuth = createAsyncThunk(
       await api.get(APIRoute.Login);
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
     } catch(error) {
-      errorHandle(error);
+      handleError(error);
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
   },
@@ -62,7 +64,7 @@ export const fetchLogin = createAsyncThunk(
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
       store.dispatch(redirectToRoute(AppRoute.Main));
     } catch(error) {
-      errorHandle(error);
+      handleError(error);
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
   },
@@ -76,7 +78,7 @@ export const fetchLogout = createAsyncThunk(
       dropToken();
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     } catch (error) {
-      errorHandle(error);
+      handleError(error);
     }
   },
 );

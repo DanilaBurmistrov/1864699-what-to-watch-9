@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setActiveGenre } from '../../store/action';
+import { setActiveGenre } from '../../store/film-process/film-process';
+import { getGenre } from '../../store/selectors';
 
 type GenresListProps = {
   genres: string[],
@@ -8,7 +9,7 @@ type GenresListProps = {
 
 export default function GenresList ({genres}: GenresListProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const activeGenre = useAppSelector((state) => state.activeGenre);
+  const activeGenre = useAppSelector(getGenre);
 
   return (
     <>
