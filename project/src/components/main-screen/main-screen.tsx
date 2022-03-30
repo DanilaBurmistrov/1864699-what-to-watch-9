@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilms, fetchPromoFilm } from '../../store/api-action';
 import UserBlock from '../user-block/user-block';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { getFilms, getGenre, getGenres, getLoadedDataStatus, getPromoFilm } from '../../store/selectors';
+import { getLoadedDataStatus, getPromoFilm, getFilmsByActiveGenre, getFilmsGenres } from '../../store/selectors';
 
 
 export default function MainScreen(): JSX.Element {
@@ -17,17 +17,15 @@ export default function MainScreen(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const genres = useAppSelector(getGenres);
-  const films = useAppSelector(getFilms);
+  const genres = useAppSelector(getFilmsGenres);
   const promoFilm = useAppSelector(getPromoFilm);
-  const activeGenre = useAppSelector(getGenre);
-  const filmsList = (activeGenre === 'All genres') ? films : films.filter((film) => film.genre === activeGenre);
+  const filmsList = useAppSelector(getFilmsByActiveGenre);
   const isDataLoaded = useAppSelector(getLoadedDataStatus);
 
   useEffect(() => {
     dispatch(fetchPromoFilm());
-    dispatch(fetchFilms(films));
-  }, [dispatch, films]);
+    dispatch(fetchFilms());
+  }, [dispatch]);
 
   return (
     <>

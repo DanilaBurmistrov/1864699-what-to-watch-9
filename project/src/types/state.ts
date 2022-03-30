@@ -6,9 +6,9 @@ export type State = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
 
-export type UserProcess = {
+export type UserData = {
   authorizationStatus: AuthorizationStatus;
-  userLoginData: {
+  userLoginData?: {
     avatarUrl: string;
     email: string;
     id: number;
@@ -22,12 +22,6 @@ export type FilmData = {
   films: Film[],
   isDataLoaded: boolean,
   promoFilm: Film | undefined,
-  avatarUrl: string,
-  film: Film | undefined,
   error: string,
-};
-
-export type FilmProcess = {
   activeGenre: string,
-  films: Film[],
 };

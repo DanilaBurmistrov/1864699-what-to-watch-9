@@ -23,7 +23,7 @@ export type AuthData = {
   password: string;
 };
 
-export type UserData = {
+export type User = {
   avatarUrl: string;
   email: string;
   id: number;

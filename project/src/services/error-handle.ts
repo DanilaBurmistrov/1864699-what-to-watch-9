@@ -10,10 +10,6 @@ export const handleError = (error: ErrorType): void => {
     throw error;
   }
 
-  const errorHandle = (message: string) => {
-    store.dispatch(setError(message));
-    store.dispatch(clearError());
-  };
 
   const {response} = error;
 
@@ -21,9 +17,11 @@ export const handleError = (error: ErrorType): void => {
     switch (response.status) {
       case HTTP_CODE.BAD_REQUEST:
       case HTTP_CODE.UNAUTHORIZED:
-      case HTTP_CODE.NOT_FOUND:
-        errorHandle(response.data.error);
+      case HTTP_CODE.NOT_FOUND: {
+        store.dispatch(setError(response.data.error));
+        store.dispatch(clearError());
         break;
+      }
     }
   }
 };

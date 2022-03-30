@@ -8,15 +8,10 @@ import MyList from '../my-list/my-list';
 import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
 import PrivateRoute from '../pages/private-route/private-route';
-import { useAppSelector } from '../../hooks';
 import { browserHistory } from '../../browser-history';
 import HistoryRouter from '../history-route/history-route';
-import { getFilms } from '../../store/selectors';
-
 
 export default function App(): JSX.Element {
-
-  const films = useAppSelector(getFilms);
 
   return (
     <HistoryRouter history={browserHistory}>
@@ -33,7 +28,7 @@ export default function App(): JSX.Element {
           path={AppRoute.MyList}
           element={
             <PrivateRoute >
-              <MyList films={films} />
+              <MyList />
             </PrivateRoute>
           }
         />

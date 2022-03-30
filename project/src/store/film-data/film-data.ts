@@ -8,17 +8,16 @@ const initialState: FilmData = {
   films: [],
   isDataLoaded: false,
   promoFilm: undefined,
-  avatarUrl: '',
-  film: undefined,
   error: '',
+  activeGenre: DEFAULT_ACTIVE_GENRE,
 };
 
 export const filmData = createSlice({
+
   name: NameSpace.data,
   initialState,
   reducers: {
     loadFilms: (state, action: PayloadAction<Film[]>) => {
-      state.genres = [DEFAULT_ACTIVE_GENRE, ...new Set(action.payload.map((film) => film.genre))];
       state.films = action.payload;
       state.isDataLoaded = true;
     },
@@ -26,15 +25,15 @@ export const filmData = createSlice({
       state.promoFilm = action.payload;
     },
     loadFilm: (state, action: PayloadAction<Film>) => {
-      state.film = action.payload;
-    },
-    setAvatarUrl: (state, action: PayloadAction<string>) => {
-      state.avatarUrl = action.payload;
+      state.films.push(action.payload);
     },
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
+    setActiveGenre: (state, action: PayloadAction<string>) => {
+      state.activeGenre = action.payload;
+    },
   },
 });
 
-export const {loadFilms, loadPromoFilm, loadFilm, setAvatarUrl, setError} = filmData.actions;
+export const {loadFilms, loadPromoFilm, loadFilm, setError, setActiveGenre} = filmData.actions;

@@ -19,7 +19,7 @@ export default function UserBlock(): JSX.Element {
         <li className="user-block__item">
           <div className="user-block__avatar">
             <img
-              src={userLoginData.avatarUrl}
+              src={userLoginData?.avatarUrl}
               alt="User avatar"
               width="63"
               height="63"

@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AuthorizationStatus, NameSpace } from '../../const';
-import { UserProcess } from '../../types/state';
+import { UserData } from '../../types/state';
 
-const initialState: UserProcess = {
+const initialState: UserData = {
   authorizationStatus: AuthorizationStatus.Unknown,
   userLoginData: {
     avatarUrl: '',
@@ -13,17 +13,17 @@ const initialState: UserProcess = {
   },
 };
 
-export const userProcess = createSlice({
+export const userData = createSlice({
   name: NameSpace.user,
   initialState,
   reducers: {
     requireAuthorization: (state, action) => {
       state.authorizationStatus = action.payload;
     },
-    userData: (state, action) => {
+    saveUserData: (state, action) => {
       state.userLoginData = action.payload;
     },
   },
 });
 
-export const {requireAuthorization, userData} = userProcess.actions;
+export const {requireAuthorization, saveUserData} = userData.actions;

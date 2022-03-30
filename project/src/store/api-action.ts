@@ -3,14 +3,14 @@ import { api, store } from '.';
 import { APIRoute, AppRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { handleError } from '../services/error-handle';
 import { dropToken, saveToken } from '../services/token';
-import { AuthData, Film, UserData } from '../types/types';
+import { AuthData, Film, User } from '../types/types';
 import { redirectToRoute } from './action';
 import { loadFilms, loadFilm, loadPromoFilm, setError } from './film-data/film-data';
-import { requireAuthorization } from './user-process/user-process';
+import { requireAuthorization, saveUserData } from './user-data/user-data';
 
-export const fetchFilms = createAsyncThunk<void, unknown, {extra: typeof api}>(
+export const fetchFilms = createAsyncThunk<void, undefined, {extra: typeof api}>(
   'data/fetchFilms',
-  async (_:unknown, {dispatch, extra}) => {
+  async (_:undefined, {dispatch, extra}) => {
     const {data} = await extra.get<Film[]>(APIRoute.Films);
     dispatch(loadFilms(data));
   },
@@ -46,8 +46,9 @@ export const fetchCheckAuth = createAsyncThunk(
   'user/checkAuth',
   async () => {
     try {
-      await api.get(APIRoute.Login);
+      const {data} = await api.get(APIRoute.Login);
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      store.dispatch(saveUserData(data));
     } catch(error) {
       handleError(error);
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
@@ -59,9 +60,10 @@ export const fetchLogin = createAsyncThunk(
   'user/login',
   async ({login: email, password}: AuthData) => {
     try {
-      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
-      saveToken(token);
+      const {data} = await api.post<User>(APIRoute.Login, {email, password});
+      saveToken(data.token);
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      store.dispatch(saveUserData(data));
       store.dispatch(redirectToRoute(AppRoute.Main));
     } catch(error) {
       handleError(error);

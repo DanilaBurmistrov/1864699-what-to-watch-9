@@ -1,14 +1,13 @@
 import Logo from '../pages/logo/logo';
 import LogoFooter from '../pages/logo/logo-footer';
-import { Film } from '../../types/types';
 import MoviesList from '../movies-list/movies-list';
 import UserBlock from '../user-block/user-block';
+import { useAppSelector } from '../../hooks';
+import { getFilms } from '../../store/selectors';
 
-type MyListProps = {
-  films: Film[],
-}
+export default function MyList(): JSX.Element {
 
-export default function MyList({films}: MyListProps): JSX.Element {
+  const films = useAppSelector(getFilms);
 
   return (
     <div className="user-page">
