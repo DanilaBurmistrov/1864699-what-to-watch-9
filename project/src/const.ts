@@ -32,3 +32,8 @@ export enum HTTP_CODE {
 }
 
 export const TIMEOUT_SHOW_ERROR = 2000;
+
+export enum NameSpace {
+  data = 'DATA',
+  user = 'USER',
+}

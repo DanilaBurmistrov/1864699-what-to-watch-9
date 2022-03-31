@@ -7,9 +7,9 @@ import GenresList from '../genres-list/genres-list';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilms, fetchPromoFilm } from '../../store/api-action';
-import { State } from '../../types/state';
 import UserBlock from '../user-block/user-block';
 import LoadingScreen from '../loading-screen/loading-screen';
+import { getLoadedDataStatus, getPromoFilm, getFilmsByActiveGenre, getFilmsGenres } from '../../store/selectors';
 
 
 export default function MainScreen(): JSX.Element {
@@ -17,12 +17,10 @@ export default function MainScreen(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const genres = useAppSelector((state: State) => state.genres);
-  const films = useAppSelector((state: State) => state.films);
-  const promoFilm = useAppSelector((state: State) => state.promoFilm);
-  const activeGenre = useAppSelector((state) => state.activeGenre);
-  const filmsList = (activeGenre === 'All genres') ? films : films.filter(({genre}) => activeGenre === genre);
-  const {isDataLoaded} = useAppSelector((state) => state);
+  const genres = useAppSelector(getFilmsGenres);
+  const promoFilm = useAppSelector(getPromoFilm);
+  const filmsList = useAppSelector(getFilmsByActiveGenre);
+  const isDataLoaded = useAppSelector(getLoadedDataStatus);
 
   useEffect(() => {
     dispatch(fetchPromoFilm());
