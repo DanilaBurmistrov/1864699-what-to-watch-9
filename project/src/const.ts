@@ -19,10 +19,11 @@ export const DEFAULT_ACTIVE_GENRE = 'All genres';
 
 export enum APIRoute {
   Films = '/films',
-  Film = '/films/',
+  Film = '/films/:id',
   PromoFilm = '/promo',
   Login = '/login',
   Logout = '/logout',
+  Comments = '/comments',
 }
 
 export enum HTTP_CODE {
@@ -37,3 +38,19 @@ export enum NameSpace {
   data = 'DATA',
   user = 'USER',
 }
+
+export enum TabType {
+  Overview = 'overview',
+  Details = 'details',
+  Reviews = 'reviews',
+}
+
+export enum FilmTextRating {
+  Bad = 'Bad',
+  Normal = 'Normal',
+  Good = 'Good',
+  VeryGood = 'Very good',
+  Awesome = 'Awesome',
+}
+
+export const FILM_COUNT_PER_STEP = 8;

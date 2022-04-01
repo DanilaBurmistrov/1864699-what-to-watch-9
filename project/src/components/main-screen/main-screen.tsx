@@ -92,9 +92,6 @@ export default function MainScreen(): JSX.Element {
               <MoviesList films={filmsList} />
             </>}
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
         </section>
 
         <footer className="page-footer">

@@ -32,3 +32,7 @@ export type User = {
 };
 
 export type ErrorType = unknown;
+
+export type FilmId = {
+  filmId?: number
+};
