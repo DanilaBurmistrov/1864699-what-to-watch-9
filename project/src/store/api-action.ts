@@ -3,9 +3,9 @@ import { api, store } from '.';
 import { APIRoute, AppRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { handleError } from '../services/error-handle';
 import { dropToken, saveToken } from '../services/token';
-import { AuthData, Film, User } from '../types/types';
+import { AuthData, Film, FilmId, User } from '../types/types';
 import { redirectToRoute } from './action';
-import { loadFilms, loadFilm, loadPromoFilm, setError } from './film-data/film-data';
+import { loadFilms, loadFilm, loadPromoFilm, setError, loadSimilarFilms } from './film-data/film-data';
 import { requireAuthorization, saveUserData } from './user-data/user-data';
 
 export const fetchFilms = createAsyncThunk<void, undefined, {extra: typeof api}>(
@@ -79,6 +79,18 @@ export const fetchLogout = createAsyncThunk(
       await api.delete(APIRoute.Logout);
       dropToken();
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    } catch (error) {
+      handleError(error);
+    }
+  },
+);
+
+export const fetchSimilarFilms = createAsyncThunk(
+  'data/fetchSimilarFilms',
+  async ({filmId}: FilmId) => {
+    try {
+      const {data} = await api.get<Film[]>(`/films/${filmId}/similar`);
+      store.dispatch(loadSimilarFilms(data));
     } catch (error) {
       handleError(error);
     }

@@ -10,6 +10,7 @@ const initialState: FilmData = {
   promoFilm: undefined,
   error: '',
   activeGenre: DEFAULT_ACTIVE_GENRE,
+  similarFilms: [],
 };
 
 export const filmData = createSlice({
@@ -24,7 +25,7 @@ export const filmData = createSlice({
     loadPromoFilm: (state, action: PayloadAction<Film>) => {
       state.promoFilm = action.payload;
     },
-    loadFilm: (state, action: PayloadAction<Film>) => {
+    loadFilm: (state, action) => {
       state.films.push(action.payload);
     },
     setError: (state, action: PayloadAction<string>) => {
@@ -33,7 +34,10 @@ export const filmData = createSlice({
     setActiveGenre: (state, action: PayloadAction<string>) => {
       state.activeGenre = action.payload;
     },
+    loadSimilarFilms: (state, action) => {
+      state.similarFilms = action.payload;
+    },
   },
 });
 
-export const {loadFilms, loadPromoFilm, loadFilm, setError, setActiveGenre} = filmData.actions;
+export const {loadFilms, loadPromoFilm, loadFilm, setError, setActiveGenre, loadSimilarFilms} = filmData.actions;
