@@ -20,12 +20,10 @@ export default function MoreLikeThisFilm({filmId}: MoreLikeThisFilmProps): JSX.E
 
   const similarFilms = useAppSelector(getSimilarFilms);
 
-  const fourSimilarFilms = similarFilms.slice(0, 4);
-
   return (
     <section className="catalog catalog--like-this">
       <h2 className="catalog__title">More like this</h2>
-      <MoviesList films={fourSimilarFilms}/>
+      <MoviesList films={similarFilms}/>
     </section>
   );
 }

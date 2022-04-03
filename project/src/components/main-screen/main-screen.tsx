@@ -10,6 +10,7 @@ import { fetchFilms, fetchPromoFilm } from '../../store/api-action';
 import UserBlock from '../user-block/user-block';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { getLoadedDataStatus, getPromoFilm, getFilmsByActiveGenre, getFilmsGenres } from '../../store/selectors';
+import { ButtonAddMyList } from '../pages/button-add-my-list/button-add-my-list';
 
 
 export default function MainScreen(): JSX.Element {
@@ -47,7 +48,7 @@ export default function MainScreen(): JSX.Element {
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src={promoFilm?.posterImage} alt={promoFilm?.name} width="218" height="327" />
+              <img src={promoFilm?.posterImage} alt={promoFilm?.name} width="218" height="327" onClick={() => navigate(AppRoute.MyList)}/>
             </div>
 
             <div className="film-card__desc">
@@ -66,14 +67,9 @@ export default function MainScreen(): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button"
-                  onClick={() => navigate(AppRoute.MyList)}
-                >
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                </button>
+
+                <ButtonAddMyList filmIsFavorite={promoFilm?.isFavorite} filmId={promoFilm?.id} />
+
               </div>
             </div>
           </div>

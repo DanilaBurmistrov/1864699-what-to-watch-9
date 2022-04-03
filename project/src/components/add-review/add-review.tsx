@@ -9,7 +9,8 @@ import UserBlock from '../user-block/user-block';
 export default function AddReview(): JSX.Element {
 
   const params = useParams();
-  const film = useAppSelector(getFilmById(Number(params.id)));
+  const filmId = Number(params.id);
+  const film = useAppSelector(getFilmById(filmId));
 
   return (
     <section className="film-card film-card--full">
@@ -44,7 +45,7 @@ export default function AddReview(): JSX.Element {
         </div>
       </div>
 
-      <AddCommentForm />
+      <AddCommentForm filmId={filmId}/>
 
     </section>
   );

@@ -1,7 +1,7 @@
 import { Film } from '../../../types/types';
 import { Link, useNavigate } from 'react-router-dom';
 import VideoPlayer from '../../video-player/video-player';
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import { PLAYER_TIME_OUT} from '../../../const';
 
 type FilmCardProps = {
@@ -25,6 +25,12 @@ export default function FilmCard({film}: FilmCardProps): JSX.Element {
     }
     setIsPlaying(null);
   };
+
+  useEffect(() => () => {
+    if (timer.current) {
+      clearTimeout(timer.current);
+    }
+  }, []);
 
   return (
     <article className="small-film-card catalog__films-card"

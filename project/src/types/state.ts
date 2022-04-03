@@ -1,6 +1,6 @@
 import { AuthorizationStatus } from '../const.js';
 import {store} from '../store/index.js';
-import { Film, User } from './types.js';
+import { Film, ReviewData, User } from './types.js';
 
 export type State = ReturnType<typeof store.getState>;
 
@@ -19,4 +19,6 @@ export type FilmData = {
   error: string,
   activeGenre: string,
   similarFilms: Film[],
-};
+  reviews: ReviewData[],
+  myListFilms: Film[],
+ };

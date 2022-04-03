@@ -1,14 +1,15 @@
-import { AppRoute } from '../../const';
+import { AuthorizationStatus } from '../../const';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Logo from '../pages/logo/logo';
 import LogoFooter from '../pages/logo/logo-footer';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilm } from '../../store/api-action';
 import { useEffect } from 'react';
-import { getFilmById } from '../../store/selectors';
+import { getFilmById, isCheckedAuth } from '../../store/selectors';
 import UserBlock from '../user-block/user-block';
 import TabsNavigation from '../tabs/tabs-navigation';
 import MoreLikeThisFilm from '../pages/more-like-this-film/more-like-this-film';
+import { ButtonAddMyList } from '../pages/button-add-my-list/button-add-my-list';
 
 export default function MoviePage(): JSX.Element {
 
@@ -17,6 +18,7 @@ export default function MoviePage(): JSX.Element {
   const params = useParams();
   const filmId = Number(params.id);
   const film = useAppSelector(getFilmById(filmId));
+  const authorizationStatus = useAppSelector(isCheckedAuth);
 
   useEffect(() => {
     dispatch(fetchFilm(filmId));
@@ -57,15 +59,11 @@ export default function MoviePage(): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button"
-                  onClick={() => navigate(AppRoute.MyList)}
-                >
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                </button>
-                <Link to={`/films/${film?.id}}/review`} className="btn film-card__button">Add review</Link>
+                <ButtonAddMyList filmIsFavorite={film?.isFavorite} filmId={film?.id} />
+                {
+                  authorizationStatus === AuthorizationStatus.Auth &&
+                <Link to={`/films/${film?.id}/review`} className="btn film-card__button">Add review</Link>
+                }
               </div>
             </div>
           </div>

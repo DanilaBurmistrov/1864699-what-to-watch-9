@@ -1,12 +1,12 @@
 type ShowMoreButtonProps = {
-  onClickCb: () => void;
+  onClick: () => void;
 }
 
-export function ShowMoreButton({onClickCb}: ShowMoreButtonProps): JSX.Element {
+export function ShowMoreButton({onClick}: ShowMoreButtonProps): JSX.Element {
 
   return (
     <div className="catalog__more">
-      <button className="catalog__button" type="button" onClick={(evt) => onClickCb()}>
+      <button className="catalog__button" type="button" onClick={onClick}>
             Show more
       </button>
     </div>

@@ -16,10 +16,10 @@ export default function MoviesList({films}: MovieListProps): JSX.Element {
 
   const [renderedFilmsCount, setRenderedFilmsCount] = useState(FILM_COUNT_PER_STEP);
 
-  const [filmsForRender, setfilmsForRender] = useState(films.slice(0, FILM_COUNT_PER_STEP));
+  const [filmsForRender, setFilmsForRender] = useState(films.slice(0, FILM_COUNT_PER_STEP));
 
   useEffect(() => {
-    setfilmsForRender(films.slice(0, renderedFilmsCount));
+    setFilmsForRender(films.slice(0, renderedFilmsCount));
 
   }, [renderedFilmsCount, films]);
 
@@ -36,7 +36,7 @@ export default function MoviesList({films}: MovieListProps): JSX.Element {
       <div className="catalog__films-list" >
         {filmsForRender.map((film) => <FilmCard key={film.id} film={film} />)}
       </div>
-      {renderedFilmsCount < films.length  && <ShowMoreButton onClickCb={handleShowMoreButtonClick}/>}
+      {renderedFilmsCount < films.length  && <ShowMoreButton onClick={handleShowMoreButtonClick}/>}
     </>
   );
 }
