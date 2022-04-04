@@ -1,6 +1,13 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { useAppDispatch } from '../../../hooks';
+import { sendReview } from '../../../store/api-action';
+import { UserReview } from '../../../types/types';
 
-export default function AddCommentForm(): JSX.Element {
+type AddCommentFormProps = {
+  filmId: number;
+}
+
+export default function AddCommentForm({filmId}: AddCommentFormProps): JSX.Element {
 
   const [rating, setRating] = useState(0);
   const [text, setText] = useState('');
@@ -10,9 +17,24 @@ export default function AddCommentForm(): JSX.Element {
     setText(value);
   };
 
+  const dispatch = useAppDispatch();
+
+  const onSubmit = (userReview: UserReview) => {
+    dispatch(sendReview(userReview));
+  };
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    onSubmit({
+      comment: text,
+      rating: rating,
+      filmId: filmId,
+    });
+  };
+
   return (
     <div className="add-review">
-      <form action="#" className="add-review__form">
+      <form action="#" className="add-review__form" onSubmit={handleSubmit}>
         <div className="rating">
           <div className="rating__stars">
             {Array.from({length: 10}).map((_, index) => (

@@ -36,3 +36,25 @@ export type ErrorType = unknown;
 export type FilmId = {
   filmId?: number
 };
+
+export type ReviewData = {
+  comment: string
+  date: string
+  id: number
+  rating: number
+  user: {
+    id: number
+    name: string
+  }
+};
+
+export type UserReview = {
+  comment: string;
+  rating: number;
+  filmId: number;
+};
+
+export type MyListStatusData = {
+  filmId: number;
+  status: number;
+}

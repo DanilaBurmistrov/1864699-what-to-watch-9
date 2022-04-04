@@ -2,12 +2,20 @@ import Logo from '../pages/logo/logo';
 import LogoFooter from '../pages/logo/logo-footer';
 import MoviesList from '../movies-list/movies-list';
 import UserBlock from '../user-block/user-block';
-import { useAppSelector } from '../../hooks';
-import { getFilms } from '../../store/selectors';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useEffect } from 'react';
+import { fetchMyListFilms } from '../../store/api-action';
+import { getMyListFilms } from '../../store/selectors';
 
 export default function MyList(): JSX.Element {
 
-  const films = useAppSelector(getFilms);
+  const myListFilms = useAppSelector(getMyListFilms);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchMyListFilms());
+  }, [dispatch]);
 
   return (
     <div className="user-page">
@@ -25,7 +33,7 @@ export default function MyList(): JSX.Element {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <div className="catalog__films-list">
-          <MoviesList films = {films}/>
+          <MoviesList films = {myListFilms}/>
         </div>
       </section>
 

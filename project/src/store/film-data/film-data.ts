@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {  DEFAULT_ACTIVE_GENRE, NameSpace } from '../../const';
 import { FilmData } from '../../types/state';
-import { Film } from '../../types/types';
+import { Film, ReviewData } from '../../types/types';
 
 const initialState: FilmData = {
   genres: [],
@@ -11,6 +11,8 @@ const initialState: FilmData = {
   error: '',
   activeGenre: DEFAULT_ACTIVE_GENRE,
   similarFilms: [],
+  reviews: [],
+  myListFilms: [],
 };
 
 export const filmData = createSlice({
@@ -25,7 +27,7 @@ export const filmData = createSlice({
     loadPromoFilm: (state, action: PayloadAction<Film>) => {
       state.promoFilm = action.payload;
     },
-    loadFilm: (state, action) => {
+    loadFilm: (state, action: PayloadAction<Film>) => {
       state.films.push(action.payload);
     },
     setError: (state, action: PayloadAction<string>) => {
@@ -34,10 +36,30 @@ export const filmData = createSlice({
     setActiveGenre: (state, action: PayloadAction<string>) => {
       state.activeGenre = action.payload;
     },
-    loadSimilarFilms: (state, action) => {
+    loadSimilarFilms: (state, action: PayloadAction<Film[]>) => {
       state.similarFilms = action.payload;
     },
+    loadReviews: (state, action: PayloadAction<ReviewData[]>) => {
+      state.reviews = action.payload;
+    },
+    loadMyListFilms: (state, action: PayloadAction<Film[]>) => {
+      state.myListFilms = action.payload;
+    },
+    changeMyListFilms: (state, action: PayloadAction<Film>) => {
+      state.films = state.films.map((film) => film.id === action.payload.id ? action.payload : film);
+      state.promoFilm = state.promoFilm?.id === action.payload.id ? action.payload : state.promoFilm;
+    },
   },
-});
+},
+);
 
-export const {loadFilms, loadPromoFilm, loadFilm, setError, setActiveGenre, loadSimilarFilms} = filmData.actions;
+export const {loadFilms,
+  loadPromoFilm,
+  loadFilm,
+  setError,
+  setActiveGenre,
+  loadSimilarFilms,
+  loadReviews,
+  loadMyListFilms,
+  changeMyListFilms,
+} = filmData.actions;

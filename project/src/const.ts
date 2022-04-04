@@ -4,7 +4,7 @@ export enum AppRoute {
   MyList = '/mylist',
   MoviePage = '/films/:id',
   AddReview = '/films/:id/review',
-  Player = '/player/:id'
+  Player = '/player/:id',
 }
 
 export enum AuthorizationStatus {
@@ -19,11 +19,12 @@ export const DEFAULT_ACTIVE_GENRE = 'All genres';
 
 export enum APIRoute {
   Films = '/films',
-  Film = '/films/:id',
+  Film = '/films/',
   PromoFilm = '/promo',
   Login = '/login',
   Logout = '/logout',
   Comments = '/comments',
+  Favorite = '/favorite',
 }
 
 export enum HTTP_CODE {
@@ -40,9 +41,9 @@ export enum NameSpace {
 }
 
 export enum TabType {
-  Overview = 'overview',
-  Details = 'details',
-  Reviews = 'reviews',
+  Overview = 'Overview',
+  Details = 'Details',
+  Reviews = 'Reviews',
 }
 
 export enum FilmTextRating {

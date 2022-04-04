@@ -1,14 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { api, store } from '.';
+import { Api } from '.';
 import { APIRoute, AppRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { handleError } from '../services/error-handle';
 import { dropToken, saveToken } from '../services/token';
-import { AuthData, Film, FilmId, User } from '../types/types';
+import { AuthData, Film, FilmId, MyListStatusData, ReviewData, User, UserReview } from '../types/types';
 import { redirectToRoute } from './action';
-import { loadFilms, loadFilm, loadPromoFilm, setError, loadSimilarFilms } from './film-data/film-data';
+import { loadFilms, loadFilm, loadPromoFilm, setError, loadSimilarFilms, loadReviews, changeMyListFilms, loadMyListFilms } from './film-data/film-data';
 import { requireAuthorization, saveUserData } from './user-data/user-data';
 
-export const fetchFilms = createAsyncThunk<void, undefined, {extra: typeof api}>(
+export const fetchFilms = createAsyncThunk<void, undefined, {extra: Api}>(
   'data/fetchFilms',
   async (_:undefined, {dispatch, extra}) => {
     const {data} = await extra.get<Film[]>(APIRoute.Films);
@@ -16,82 +16,131 @@ export const fetchFilms = createAsyncThunk<void, undefined, {extra: typeof api}>
   },
 );
 
-export const fetchFilm = createAsyncThunk(
+export const fetchFilm = createAsyncThunk<void, number, {extra: Api}>(
   'data/fetchFilm',
-  async (filmId: number) => {
+  async (filmId, {dispatch, extra: api}) => {
     const {data} = await api.get<Film>(`${APIRoute.Film}${filmId}`);
-    store.dispatch(loadFilm(data));
+    dispatch(loadFilm(data));
   },
 );
 
-export const fetchPromoFilm = createAsyncThunk(
+export const fetchPromoFilm = createAsyncThunk<void, undefined, {extra: Api}>(
   'data/fetchPromoFilm',
-  async () => {
+  async (_, {dispatch, extra: api}) => {
     const {data} = await api.get<Film>(APIRoute.PromoFilm);
-    store.dispatch(loadPromoFilm(data));
+    dispatch(loadPromoFilm(data));
   },
 );
 
-export const clearError = createAsyncThunk(
+export const clearError = createAsyncThunk<void, undefined, {extra: Api}>(
   'data/clearError',
-  () => {
+  (_, {dispatch}) => {
     setTimeout(
-      () => store.dispatch(setError('')),
+      () => dispatch(setError('')),
       TIMEOUT_SHOW_ERROR,
     );
   },
 );
 
-export const fetchCheckAuth = createAsyncThunk(
+export const fetchCheckAuth = createAsyncThunk<void, undefined, {extra: Api}>(
   'user/checkAuth',
-  async () => {
+  async (_, {dispatch, extra: api}) => {
     try {
       const {data} = await api.get(APIRoute.Login);
-      store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
-      store.dispatch(saveUserData(data));
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(saveUserData(data));
     } catch(error) {
       handleError(error);
-      store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
   },
 );
 
-export const fetchLogin = createAsyncThunk(
+export const fetchLogin = createAsyncThunk<void, AuthData, {extra: Api}>(
   'user/login',
-  async ({login: email, password}: AuthData) => {
+  async ({login: email, password}, {dispatch, extra: api}) => {
     try {
       const {data} = await api.post<User>(APIRoute.Login, {email, password});
       saveToken(data.token);
-      store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
-      store.dispatch(saveUserData(data));
-      store.dispatch(redirectToRoute(AppRoute.Main));
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(saveUserData(data));
+      dispatch(redirectToRoute(AppRoute.Main));
     } catch(error) {
       handleError(error);
-      store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
   },
 );
 
-export const fetchLogout = createAsyncThunk(
+export const fetchLogout = createAsyncThunk<void, undefined, {extra: Api}>(
   'user/logout',
-  async () => {
+  async (_, {dispatch, extra: api}) => {
     try {
       await api.delete(APIRoute.Logout);
       dropToken();
-      store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     } catch (error) {
       handleError(error);
     }
   },
 );
 
-export const fetchSimilarFilms = createAsyncThunk(
+export const fetchSimilarFilms = createAsyncThunk<void, FilmId, {extra: Api}>(
   'data/fetchSimilarFilms',
-  async ({filmId}: FilmId) => {
+  async ({filmId}, {dispatch, extra: api}) => {
     try {
       const {data} = await api.get<Film[]>(`/films/${filmId}/similar`);
-      store.dispatch(loadSimilarFilms(data));
+      dispatch(loadSimilarFilms(data));
     } catch (error) {
+      handleError(error);
+    }
+  },
+);
+
+export const fetchReviews = createAsyncThunk<void, FilmId, {extra: Api}>(
+  'data/review',
+  async ({filmId}, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.get<ReviewData[]>(`/comments/${filmId}`);
+      dispatch(loadReviews(data));
+    } catch (error) {
+      handleError(error);
+    }
+  },
+);
+
+export const sendReview = createAsyncThunk<void, UserReview, {extra: Api}>(
+  'data/newReview',
+  async ({comment, rating, filmId}, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.post<ReviewData[]>(`/comments/${filmId}`, {comment, rating});
+      dispatch(loadReviews(data));
+      dispatch(redirectToRoute(`/films/${filmId}`));
+    } catch (error) {
+      handleError(error);
+    }
+  },
+);
+
+export const changeMyListStatus = createAsyncThunk<void, MyListStatusData, {extra: Api}>(
+  'data/changeMyListStatus',
+  async ({filmId, status}, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.post<Film>(`/favorite/${filmId}/${status}`);
+      dispatch(changeMyListFilms(data));
+    } catch(error) {
+      handleError(error);
+    }
+  },
+);
+
+export const fetchMyListFilms = createAsyncThunk<void, undefined, {extra: Api}>(
+  'data/fetchMyListFilms',
+  async (_, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.get<Film[]>(APIRoute.Favorite);
+      dispatch(loadMyListFilms(data));
+    } catch(error) {
       handleError(error);
     }
   },
