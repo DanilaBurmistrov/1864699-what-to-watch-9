@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { browserHistory } from '../../browser-history';
 import { useAppSelector } from '../../hooks';
 import { getFilmById } from '../../store/selectors';
+import { getVideoTimeLeft } from '../../utils';
 
 
 export default function Player(): JSX.Element {
@@ -45,20 +46,7 @@ export default function Player(): JSX.Element {
 
   }, []);
 
-
-  function getVideoTimeLeft(fullTime: number, currentTime: number) {
-
-    const timeLeft = fullTime - currentTime;
-    const hoursLeft = Math.trunc(timeLeft / 3600);
-    const minutesLeft = timeLeft - hoursLeft * 3600;
-
-    if (hoursLeft) {
-      return  `-${(`0${hoursLeft}`).slice(-2)}:${(`0${Math.floor(minutesLeft / 60)}`).slice(-2)}:${(`0${  Math.floor(timeLeft % 60)}`).slice(-2)}`;
-    }
-    return  `-${(`0${Math.floor(minutesLeft / 60)}`).slice(-2)}:${(`0${  Math.floor(timeLeft % 60)}`).slice(-2)}`;
-  }
-
-  function exitPlayer() {
+  function handlePlayerExit() {
     browserHistory.back();
   }
 
@@ -77,7 +65,7 @@ export default function Player(): JSX.Element {
       <video ref={videoPlayerRef} src={film?.videoLink} className="player__video" poster={film?.posterImage}></video>
 
       <button type="button" className="player__exit"
-        onClick={exitPlayer}
+        onClick={handlePlayerExit}
       >Exit
       </button>
 

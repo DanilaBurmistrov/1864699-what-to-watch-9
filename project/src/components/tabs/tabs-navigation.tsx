@@ -17,7 +17,7 @@ export default function TabsNavigation(): JSX.Element {
       <nav className="film-nav film-card__nav">
         <ul className="film-nav__list">
           {[TabType.Overview, TabType.Details, TabType.Reviews].map((tab) => (
-            <li className = {`film-nav__item ${tab === typeTabs  ? 'film-nav__item--active' : ''}`} key = {tab}>
+            <li className= {`film-nav__item ${tab === typeTabs ? 'film-nav__item--active' : ''}`} key= {tab}>
               <a href="#todo" className="film-nav__link"
                 onClick={(evt: React.MouseEvent<HTMLAnchorElement>) => {
                   evt.preventDefault();
@@ -30,7 +30,7 @@ export default function TabsNavigation(): JSX.Element {
           ))}
         </ul>
       </nav>
-      {selectedFilm && <Tabs type={typeTabs}/>}
+      {selectedFilm && <Tabs type= {typeTabs}/>}
     </div>
   );
 }
