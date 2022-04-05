@@ -1,27 +1,8 @@
-import { FilmTextRating } from '../../const';
 import { Film } from '../../types/types';
+import { getTextRating } from '../../utils';
 
 type FilmTabOverviewProps = {
   film: Film,
-}
-
-
-function getTextRating(rating: number) {
-  if(rating >= 0 && rating < 3) {
-    return FilmTextRating.Bad;
-  }
-  else if(rating >= 3 && rating < 5) {
-    return FilmTextRating.Normal;
-  }
-  else if(rating >= 5 && rating < 8) {
-    return FilmTextRating.Good;
-  }
-  else if(rating >= 8 && rating < 10) {
-    return FilmTextRating.VeryGood;
-  }
-  else {
-    return FilmTextRating.Awesome;
-  }
 }
 
 export default function FilmTabOverview({film}: FilmTabOverviewProps): JSX.Element {

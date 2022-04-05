@@ -1,6 +1,6 @@
 import MoviesList from '../movies-list/movies-list';
 import { AppRoute } from '../../const';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../pages/logo/logo';
 import LogoFooter from '../pages/logo/logo-footer';
 import GenresList from '../genres-list/genres-list';
@@ -47,9 +47,9 @@ export default function MainScreen(): JSX.Element {
 
         <div className="film-card__wrap">
           <div className="film-card__info">
-            <div className="film-card__poster">
-              <img src={promoFilm?.posterImage} alt={promoFilm?.name} width="218" height="327" onClick={() => navigate(AppRoute.MyList)}/>
-            </div>
+            <Link to={AppRoute.MyList} className="film-card__poster">
+              <img src={promoFilm?.posterImage} alt={promoFilm?.name} width="218" height="327" />
+            </Link>
 
             <div className="film-card__desc">
               <h2 className="film-card__title">{promoFilm?.name}</h2>
