@@ -1,3 +1,17 @@
+export const MIN_LENGTH_TEXT = 50;
+
+export const MAX_LENGTH_TEXT = 400;
+
+export const PLAYER_TIME_OUT = 1000;
+
+export const TIMEOUT_SHOW_ERROR = 2000;
+
+export const FILM_COUNT_PER_STEP = 8;
+
+export const STAR_COUNT = 10;
+
+export const ratingStars: number[] = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+
 export enum AppRoute {
   Main = '/',
   SignIn = '/login',
@@ -12,8 +26,6 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
-
-export const PLAYER_TIME_OUT = 1000;
 
 export const DEFAULT_ACTIVE_GENRE = 'All genres';
 
@@ -32,8 +44,6 @@ export enum HTTP_CODE {
   UNAUTHORIZED = 401,
   NOT_FOUND = 404,
 }
-
-export const TIMEOUT_SHOW_ERROR = 2000;
 
 export enum NameSpace {
   data = 'DATA',
@@ -54,4 +64,3 @@ export enum FilmTextRating {
   Awesome = 'Awesome',
 }
 
-export const FILM_COUNT_PER_STEP = 8;
