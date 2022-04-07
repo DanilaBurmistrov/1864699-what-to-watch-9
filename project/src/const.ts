@@ -1,3 +1,5 @@
+export const DEFAULT_ACTIVE_GENRE = 'All genres';
+
 export const MIN_LENGTH_TEXT = 50;
 
 export const MAX_LENGTH_TEXT = 400;
@@ -8,9 +10,9 @@ export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const FILM_COUNT_PER_STEP = 8;
 
-export const STAR_COUNT = 10;
+export const MAX_RATING_STARS = 10;
 
-export const ratingStars: number[] = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+export const STARS_ARRAY = new Array(MAX_RATING_STARS).fill(0).map((_, index) => String(MAX_RATING_STARS - index));
 
 export enum AppRoute {
   Main = '/',
@@ -26,8 +28,6 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
-
-export const DEFAULT_ACTIVE_GENRE = 'All genres';
 
 export enum APIRoute {
   Films = '/films',

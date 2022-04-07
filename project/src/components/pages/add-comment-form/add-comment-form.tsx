@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
-import { MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, ratingStars } from '../../../const';
+import { MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, STARS_ARRAY } from '../../../const';
 import { useAppDispatch } from '../../../hooks';
 import { sendReview } from '../../../store/api-action';
 
@@ -11,6 +11,8 @@ export default function AddCommentForm({filmId}: AddCommentFormProps): JSX.Eleme
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
+
+  const isCommentValid = comment.length > MIN_LENGTH_TEXT && comment.length < MAX_LENGTH_TEXT && rating !== 0;
 
   const commentChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
     const {value} = evt.target;
@@ -34,9 +36,9 @@ export default function AddCommentForm({filmId}: AddCommentFormProps): JSX.Eleme
       <form action="#" className="add-review__form" onSubmit={handleSubmit}>
         <div className="rating">
           <div className="rating__stars">
-            {ratingStars.map((element) => (
+            {STARS_ARRAY.map((element) => (
               <Fragment key={element}>
-                <input className="rating__input" id={`star-${element}`} type="radio" name="rating" value={element} onChange={ratingChangeHandler} />
+                <input className="rating__input" id={`star-${element}`} type="radio" name="rating" value={element} onChange={ratingChangeHandler}/>
                 <label className="rating__label" htmlFor={`star-${element}`}>Rating {element}</label>
               </Fragment>
             ))}
@@ -54,9 +56,7 @@ export default function AddCommentForm({filmId}: AddCommentFormProps): JSX.Eleme
           >
           </textarea>
           <div className="add-review__submit">
-            {comment.length > MIN_LENGTH_TEXT && comment.length < MAX_LENGTH_TEXT && rating !== 0
-              ? <button className="add-review__btn" type="submit">Post</button>
-              : null}
+            <button className="add-review__btn" type="submit" disabled={!isCommentValid}>Post</button>
           </div>
 
         </div>
