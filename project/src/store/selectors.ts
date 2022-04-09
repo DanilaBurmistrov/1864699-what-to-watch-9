@@ -39,3 +39,7 @@ export const getSimilarFilms = (state: State): Film[] => state[NameSpace.data].s
 export const getReviews = (state: State): ReviewData[] => state[NameSpace.data].reviews;
 
 export const getMyListFilms = (state: State): Film[] => state[NameSpace.data].myListFilms;
+
+export const getIsDisabledForm = (state: State): boolean => state[NameSpace.data].isDisabledForm;
+
+export const getReviewSendStatus = (state: State): string => state[NameSpace.data].reviewSendStatusItem;

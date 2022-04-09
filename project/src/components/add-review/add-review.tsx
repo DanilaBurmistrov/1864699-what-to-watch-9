@@ -1,9 +1,12 @@
-import AddCommentForm from '../pages/add-comment-form/add-comment-form';
-import Logo from '../pages/logo/logo';
+import AddCommentForm from '../add-comment-form/add-comment-form';
+import Logo from '../logo/logo';
 import { Link, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { getFilmById } from '../../store/selectors';
 import UserBlock from '../user-block/user-block';
+import { useEffect } from 'react';
+import { fetchFilm } from '../../store/api-action';
+import { useDispatch } from 'react-redux';
 
 
 export default function AddReview(): JSX.Element {
@@ -11,9 +14,14 @@ export default function AddReview(): JSX.Element {
   const params = useParams();
   const filmId = Number(params.id);
   const film = useAppSelector(getFilmById(filmId));
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFilm(filmId));
+  }, [dispatch, filmId]);
 
   return (
-    <section className="film-card film-card--full">
+    <section className="film-card film-card--full" style={{backgroundColor: film?.backgroundColor}}>
       <div className="film-card__header">
         <div className="film-card__bg">
           <img src={film?.backgroundImage} alt={film?.name} />
@@ -50,3 +58,4 @@ export default function AddReview(): JSX.Element {
     </section>
   );
 }
+

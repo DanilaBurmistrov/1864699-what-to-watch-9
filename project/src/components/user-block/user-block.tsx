@@ -16,7 +16,7 @@ export default function UserBlock(): JSX.Element {
   if(authorizationStatus === AuthorizationStatus.Auth) {
     return (
       <ul className="user-block">
-        <li className="user-block__item">
+        <Link to={AppRoute.MyList} className="user-block__item">
           <div className="user-block__avatar">
             <img
               src={userLoginData?.avatarUrl}
@@ -25,7 +25,7 @@ export default function UserBlock(): JSX.Element {
               height="63"
             />
           </div>
-        </li>
+        </Link>
         <li className="user-block__item">
           <Link to={AppRoute.Main}
             onClick={(evt) => {

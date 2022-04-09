@@ -1,16 +1,17 @@
 import { AuthorizationStatus } from '../../const';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import Logo from '../pages/logo/logo';
-import LogoFooter from '../pages/logo/logo-footer';
+import Logo from '../logo/logo';
+import LogoFooter from '../logo-footer/logo-footer';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilm } from '../../store/api-action';
 import { useEffect } from 'react';
-import { getFilmById, isCheckedAuth } from '../../store/selectors';
+import { getFilmById, getLoadedDataStatus, isCheckedAuth } from '../../store/selectors';
 import UserBlock from '../user-block/user-block';
 import TabsNavigation from '../tabs/tabs-navigation';
-import MoreLikeThisFilm from '../pages/more-like-this-film/more-like-this-film';
-import { ButtonAddMyList } from '../pages/button-add-my-list/button-add-my-list';
-import PageNotFound from '../error-message/page-not-found';
+import MoreLikeThisFilm from '../more-like-this-film/more-like-this-film';
+import { ButtonAddMyList } from '../button-add-my-list/button-add-my-list';
+import PageNotFound from '../page-not-found/page-not-found';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 export default function MoviePage(): JSX.Element {
 
@@ -20,18 +21,22 @@ export default function MoviePage(): JSX.Element {
   const filmId = Number(params.id);
   const film = useAppSelector(getFilmById(filmId));
   const authorizationStatus = useAppSelector(isCheckedAuth);
+  const isDataLoaded = useAppSelector(getLoadedDataStatus);
 
   useEffect(() => {
     dispatch(fetchFilm(filmId));
   }, [dispatch, filmId]);
 
+  if(!isDataLoaded) {
+    return <LoadingScreen />;
+  }
   if(!film) {
     return (
       <PageNotFound />);
   }
   return (
     <>
-      <section className="film-card film-card--full">
+      <section className="film-card film-card--full" style={{backgroundColor: film?.backgroundColor}}>
         <div className="film-card__hero">
           <div className="film-card__bg">
             <img src={film?.backgroundImage} alt={film?.name}/>

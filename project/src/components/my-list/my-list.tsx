@@ -1,5 +1,5 @@
-import Logo from '../pages/logo/logo';
-import LogoFooter from '../pages/logo/logo-footer';
+import Logo from '../logo/logo';
+import LogoFooter from '../logo-footer/logo-footer';
 import MoviesList from '../movies-list/movies-list';
 import UserBlock from '../user-block/user-block';
 import { useAppDispatch, useAppSelector } from '../../hooks';

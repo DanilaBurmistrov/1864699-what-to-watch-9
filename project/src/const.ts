@@ -4,7 +4,7 @@ export const MIN_LENGTH_TEXT = 50;
 
 export const MAX_LENGTH_TEXT = 400;
 
-export const PLAYER_TIME_OUT = 1000;
+export const PLAYER_TIME_OUT = 400;
 
 export const TIMEOUT_SHOW_ERROR = 2000;
 
@@ -39,7 +39,7 @@ export enum APIRoute {
   Favorite = '/favorite',
 }
 
-export enum HTTP_CODE {
+export enum HttpCode {
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
   NOT_FOUND = 404,

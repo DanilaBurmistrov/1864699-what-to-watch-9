@@ -1,8 +1,7 @@
 import MoviesList from '../movies-list/movies-list';
-import { AppRoute } from '../../const';
-import { Link, useNavigate } from 'react-router-dom';
-import Logo from '../pages/logo/logo';
-import LogoFooter from '../pages/logo/logo-footer';
+import { useNavigate } from 'react-router-dom';
+import Logo from '../logo/logo';
+import LogoFooter from '../logo-footer/logo-footer';
 import GenresList from '../genres-list/genres-list';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -10,7 +9,7 @@ import { fetchFilms, fetchPromoFilm } from '../../store/api-action';
 import UserBlock from '../user-block/user-block';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { getLoadedDataStatus, getPromoFilm, getFilmsByActiveGenre, getFilmsGenres } from '../../store/selectors';
-import { ButtonAddMyList } from '../pages/button-add-my-list/button-add-my-list';
+import { ButtonAddMyList } from '../button-add-my-list/button-add-my-list';
 
 
 export default function MainScreen(): JSX.Element {
@@ -47,9 +46,9 @@ export default function MainScreen(): JSX.Element {
 
         <div className="film-card__wrap">
           <div className="film-card__info">
-            <Link to={AppRoute.MyList} className="film-card__poster">
+            <li className="film-card__poster">
               <img src={promoFilm?.posterImage} alt={promoFilm?.name} width="218" height="327" />
-            </Link>
+            </li>
 
             <div className="film-card__desc">
               <h2 className="film-card__title">{promoFilm?.name}</h2>

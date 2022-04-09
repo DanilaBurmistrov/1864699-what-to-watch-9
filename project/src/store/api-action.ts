@@ -5,7 +5,7 @@ import { handleError } from '../services/error-handle';
 import { dropToken, saveToken } from '../services/token';
 import { AuthData, Film, FilmId, MyListStatusData, ReviewData, User, UserReview } from '../types/types';
 import { redirectToRoute } from './action';
-import { loadFilms, loadFilm, loadPromoFilm, setError, loadSimilarFilms, loadReviews, changeMyListFilms, loadMyListFilms } from './film-data/film-data';
+import { loadFilms, loadFilm, loadPromoFilm, setError, loadSimilarFilms, loadReviews, changeMyListFilms, loadMyListFilms, disableForm, enableForm, reviewSendStatus } from './film-data/film-data';
 import { requireAuthorization, saveUserData } from './user-data/user-data';
 
 export const fetchFilms = createAsyncThunk<void, undefined, {extra: Api}>(
@@ -113,11 +113,16 @@ export const sendReview = createAsyncThunk<void, UserReview, {extra: Api}>(
   'data/newReview',
   async ({comment, rating, filmId}, {dispatch, extra: api}) => {
     try {
+      dispatch(disableForm());
       const {data} = await api.post<ReviewData[]>(`/comments/${filmId}`, {comment, rating});
       dispatch(loadReviews(data));
+      dispatch(enableForm());
+      dispatch(reviewSendStatus(''));
       dispatch(redirectToRoute(`/films/${filmId}`));
     } catch (error) {
       handleError(error);
+      dispatch(enableForm());
+      dispatch(reviewSendStatus('error'));
     }
   },
 );

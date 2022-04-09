@@ -21,4 +21,6 @@ export type FilmData = {
   similarFilms: Film[],
   reviews: ReviewData[],
   myListFilms: Film[],
+  isDisabledForm: boolean;
+  reviewSendStatusItem: string,
  };

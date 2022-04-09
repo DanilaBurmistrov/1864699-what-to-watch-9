@@ -1,5 +1,5 @@
-import { useAppDispatch } from '../../../hooks';
-import { changeMyListStatus } from '../../../store/api-action';
+import { useAppDispatch } from '../../hooks';
+import { changeMyListStatus } from '../../store/api-action';
 
 
 type ButtonAddMyListProps = {

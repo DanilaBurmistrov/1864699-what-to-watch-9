@@ -1,4 +1,4 @@
-import { HTTP_CODE } from '../const';
+import { HttpCode } from '../const';
 import { store } from '../store';
 import { clearError } from '../store/api-action';
 import { ErrorType } from '../types/types';
@@ -10,14 +10,13 @@ export const handleError = (error: ErrorType): void => {
     throw error;
   }
 
-
   const {response} = error;
 
   if (response) {
     switch (response.status) {
-      case HTTP_CODE.BAD_REQUEST:
-      case HTTP_CODE.UNAUTHORIZED:
-      case HTTP_CODE.NOT_FOUND: {
+      case HttpCode.BAD_REQUEST:
+      case HttpCode.UNAUTHORIZED:
+      case HttpCode.NOT_FOUND: {
         store.dispatch(setError(response.data.error));
         store.dispatch(clearError());
         break;

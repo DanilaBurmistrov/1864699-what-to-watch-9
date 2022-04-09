@@ -1,15 +1,15 @@
 import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import AddReview from '../add-review/add-review';
-import Error from '../pages/error/error';
 import MainScreen from '../main-screen/main-screen';
 import MoviePage from '../movie-page/movie-page';
 import MyList from '../my-list/my-list';
 import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
-import PrivateRoute from '../pages/private-route/private-route';
+import PrivateRoute from '../private-route/private-route';
 import { browserHistory } from '../../browser-history';
-import HistoryRouter from '../history-route/history-route';
+import HistoryRouter from '../history-router/history-router';
+import PageNotFound from '../page-not-found/page-not-found';
 
 export default function App(): JSX.Element {
 
@@ -46,7 +46,7 @@ export default function App(): JSX.Element {
         />
         <Route
           path="*"
-          element={<Error />}
+          element={<PageNotFound />}
         />
       </Routes>
     </HistoryRouter>

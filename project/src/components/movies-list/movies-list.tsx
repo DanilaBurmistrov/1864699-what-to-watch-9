@@ -1,10 +1,10 @@
-import FilmCard from '../pages/film-card/film-card';
+import FilmCard from '../film-card/film-card';
 import { Film } from '../../types/types';
 import { useState, useEffect } from 'react';
 import { FILM_COUNT_PER_STEP } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { getActiveGenre } from '../../store/selectors';
-import { ShowMoreButton } from '../pages/show-more-button/show-more-button';
+import { ShowMoreButton } from '../show-more-button/show-more-button';
 
 type MovieListProps = {
   films: Film[],

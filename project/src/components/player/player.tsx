@@ -1,7 +1,9 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { browserHistory } from '../../browser-history';
 import { useAppSelector } from '../../hooks';
+import { fetchFilm } from '../../store/api-action';
 import { getFilmById } from '../../store/selectors';
 import { getVideoTimeLeft } from '../../utils';
 
@@ -11,6 +13,11 @@ export default function Player(): JSX.Element {
   const params = useParams();
   const filmId = Number(params.id);
   const film = useAppSelector(getFilmById(filmId));
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFilm(filmId));
+  }, [dispatch, filmId]);
 
   const [playing, setPlaying] = useState(true);
 
@@ -95,7 +102,7 @@ export default function Player(): JSX.Element {
             </button>
           )}
 
-          <div className="player__name">Transpotting</div>
+          <div className="player__name">{film?.name}</div>
 
           <button type="button" className="player__full-screen" onClick={toggleFullScreen}>
             <svg viewBox="0 0 27 27" width="27" height="27">

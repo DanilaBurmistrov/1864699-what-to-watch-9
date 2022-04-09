@@ -13,6 +13,8 @@ const initialState: FilmData = {
   similarFilms: [],
   reviews: [],
   myListFilms: [],
+  isDisabledForm: false,
+  reviewSendStatusItem: '',
 };
 
 export const filmData = createSlice({
@@ -29,6 +31,7 @@ export const filmData = createSlice({
     },
     loadFilm: (state, action: PayloadAction<Film>) => {
       state.films.push(action.payload);
+      state.isDataLoaded = true;
     },
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
@@ -49,6 +52,15 @@ export const filmData = createSlice({
       state.films = state.films.map((film) => film.id === action.payload.id ? action.payload : film);
       state.promoFilm = state.promoFilm?.id === action.payload.id ? action.payload : state.promoFilm;
     },
+    enableForm: (state) => {
+      state.isDisabledForm = false;
+    },
+    disableForm: (state) => {
+      state.isDisabledForm = true;
+    },
+    reviewSendStatus: (state, action) => {
+      state.reviewSendStatusItem = action.payload;
+    },
   },
 },
 );
@@ -62,4 +74,7 @@ export const {loadFilms,
   loadReviews,
   loadMyListFilms,
   changeMyListFilms,
+  enableForm,
+  disableForm,
+  reviewSendStatus,
 } = filmData.actions;
