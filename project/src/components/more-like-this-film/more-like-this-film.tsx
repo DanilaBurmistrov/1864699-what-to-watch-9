@@ -18,7 +18,7 @@ export default function MoreLikeThisFilm({filmId}: MoreLikeThisFilmProps): JSX.E
 
   },[dispatch, filmId]);
 
-  const similarFilms = useAppSelector(getSimilarFilms).filter((film) => film.id !== filmId);
+  const similarFilms = useAppSelector(getSimilarFilms).filter((film) => film.id !== filmId).slice(0, 4);
 
   return (
     <section className="catalog catalog--like-this">

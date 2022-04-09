@@ -8,8 +8,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilms, fetchPromoFilm } from '../../store/api-action';
 import UserBlock from '../user-block/user-block';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { getLoadedDataStatus, getPromoFilm, getFilmsByActiveGenre, getFilmsGenres } from '../../store/selectors';
+import { getLoadedDataStatus, getPromoFilm, getFilmsByActiveGenre, getFilmsGenres, isCheckedAuth } from '../../store/selectors';
 import { ButtonAddMyList } from '../button-add-my-list/button-add-my-list';
+import { AuthorizationStatus } from '../../const';
 
 
 export default function MainScreen(): JSX.Element {
@@ -21,6 +22,7 @@ export default function MainScreen(): JSX.Element {
   const promoFilm = useAppSelector(getPromoFilm);
   const filmsList = useAppSelector(getFilmsByActiveGenre);
   const isDataLoaded = useAppSelector(getLoadedDataStatus);
+  const authorizationStatus = useAppSelector(isCheckedAuth);
 
   useEffect(() => {
     dispatch(fetchPromoFilm());
@@ -46,9 +48,9 @@ export default function MainScreen(): JSX.Element {
 
         <div className="film-card__wrap">
           <div className="film-card__info">
-            <li className="film-card__poster">
+            <div className="film-card__poster">
               <img src={promoFilm?.posterImage} alt={promoFilm?.name} width="218" height="327" />
-            </li>
+            </div>
 
             <div className="film-card__desc">
               <h2 className="film-card__title">{promoFilm?.name}</h2>
@@ -66,9 +68,10 @@ export default function MainScreen(): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </button>
-
-                <ButtonAddMyList filmIsFavorite={promoFilm?.isFavorite} filmId={promoFilm?.id} />
-
+                {
+                  authorizationStatus === AuthorizationStatus.Auth &&
+                    <ButtonAddMyList filmIsFavorite={promoFilm?.isFavorite} filmId={promoFilm?.id} />
+                }
               </div>
             </div>
           </div>

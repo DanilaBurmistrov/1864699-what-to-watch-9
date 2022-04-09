@@ -19,7 +19,7 @@ export default function Player(): JSX.Element {
     dispatch(fetchFilm(filmId));
   }, [dispatch, filmId]);
 
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
 
   const [videoFullTime, setVideoFullTime] = useState(0);
 
@@ -28,6 +28,13 @@ export default function Player(): JSX.Element {
   const [videoProgress, setVideoProgress] = useState(0);
 
   const videoPlayerRef = useRef() as MutableRefObject<HTMLVideoElement>;
+
+  useEffect(() => {
+    setVideoFullTime(videoPlayerRef.current.duration);
+    videoPlayerRef.current.play().then(() => {
+      setPlaying(true);
+    });
+  }, []);
 
   function handleVideoPlayPauseClick(control: string) {
     if (control === 'play') {
@@ -40,17 +47,22 @@ export default function Player(): JSX.Element {
   }
 
   if(videoPlayerRef.current) {
-    videoPlayerRef.current.ontimeupdate = () => {
-      setVideoFullTime(videoPlayerRef.current.duration);
+    videoPlayerRef.current.ontimeupdate = (evt) => {
+
+      const dur = videoPlayerRef.current ? videoPlayerRef.current.duration : 0;
+
+      setVideoFullTime(dur);
       setVideoCurrentTime(videoPlayerRef.current?.currentTime);
-      setVideoProgress((videoPlayerRef.current?.currentTime / videoFullTime) * 100);
+      setVideoProgress(((videoPlayerRef.current?.currentTime) / videoFullTime) * 100);
     };
   }
 
   useEffect(() => {
     setVideoFullTime(videoPlayerRef.current.duration);
     videoPlayerRef.current.play();
-
+    return () => {
+      setVideoFullTime(0);
+    };
   }, []);
 
   function handlePlayerExit() {
@@ -66,10 +78,9 @@ export default function Player(): JSX.Element {
     }
   }
 
-
   return (
     <div className="player">
-      <video ref={videoPlayerRef} src={film?.videoLink} className="player__video" poster={film?.posterImage}></video>
+      <video ref={videoPlayerRef} src={film?.videoLink} muted className="player__video" poster={film?.posterImage}></video>
 
       <button type="button" className="player__exit"
         onClick={handlePlayerExit}
@@ -79,7 +90,7 @@ export default function Player(): JSX.Element {
       <div className="player__controls">
         <div className="player__controls-row">
           <div className="player__time">
-            <progress className="player__progress" value={videoProgress} max="100"></progress>
+            <progress className="player__progress" value={videoProgress || 0} max="100"></progress>
             <div className="player__toggler" style={{left: `${videoProgress}%`}}>Toggler</div>
           </div>
           <div className="player__time-value"> {(videoFullTime && videoCurrentTime) ? getVideoTimeLeft(videoFullTime, videoCurrentTime) : '0:00:00'}</div>

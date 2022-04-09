@@ -34,7 +34,7 @@ export const getFilmsGenres = createSelector(
     [DEFAULT_ACTIVE_GENRE, ...new Set(films.map((film) => film.genre))],
 );
 
-export const getSimilarFilms = (state: State): Film[] => state[NameSpace.data].similarFilms.slice(0, 4);
+export const getSimilarFilms = (state: State): Film[] => state[NameSpace.data].similarFilms;
 
 export const getReviews = (state: State): ReviewData[] => state[NameSpace.data].reviews;
 

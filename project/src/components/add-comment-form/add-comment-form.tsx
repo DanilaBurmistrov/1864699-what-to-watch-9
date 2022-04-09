@@ -67,7 +67,7 @@ export default function AddCommentForm({filmId}: AddCommentFormProps): JSX.Eleme
           </div>
 
         </div>
-        {sendStatus === 'error' ? <span>Oops, something went wrong while submitting your review! Try later!</span> : ''}
+        {sendStatus === 'error' ? <span style={{color: 'black'}}> Oops, something went wrong while submitting your review! Try later!</span> : ''}
       </form>
     </div>
   );
