@@ -30,7 +30,9 @@ export const filmData = createSlice({
       state.promoFilm = action.payload;
     },
     loadFilm: (state, action: PayloadAction<Film>) => {
-      state.films.push(action.payload);
+      if(!state.films.find((film) => film.id === action.payload.id)) {
+        state.films.push(action.payload);
+      }
       state.isDataLoaded = true;
     },
     setError: (state, action: PayloadAction<string>) => {
