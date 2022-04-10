@@ -5,6 +5,7 @@ import { ErrorType } from '../types/types';
 import request from 'axios';
 import { setError } from '../store/film-data/film-data';
 
+
 export const handleError = (error: ErrorType): void => {
   if (!request.isAxiosError(error)) {
     throw error;
@@ -21,6 +22,9 @@ export const handleError = (error: ErrorType): void => {
         store.dispatch(clearError());
         break;
       }
+      default: store.dispatch(setError('Something went wrong. Please try again'));
+        store.dispatch(clearError());
+        break;
     }
   }
 };

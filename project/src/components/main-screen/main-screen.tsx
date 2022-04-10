@@ -29,6 +29,9 @@ export default function MainScreen(): JSX.Element {
     dispatch(fetchFilms());
   }, [dispatch]);
 
+  if (!isDataLoaded) {
+    return (<LoadingScreen />);
+  }
   return (
     <>
       <section className="film-card">
@@ -82,13 +85,10 @@ export default function MainScreen(): JSX.Element {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          {!isDataLoaded ? <LoadingScreen /> :
-            <>
-              <ul className="catalog__genres-list">
-                <GenresList genres={genres} />
-              </ul>
-              <MoviesList films={filmsList} />
-            </>}
+          <ul className="catalog__genres-list">
+            <GenresList genres={genres} />
+          </ul>
+          <MoviesList films={filmsList} />
 
         </section>
 

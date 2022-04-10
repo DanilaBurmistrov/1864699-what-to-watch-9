@@ -20,11 +20,15 @@ export default function MoviesList({films}: MovieListProps): JSX.Element {
 
   useEffect(() => {
     setFilmsForRender(films.slice(0, renderedFilmsCount));
-
+    return () => {
+      setFilmsForRender([]);
+    };
   }, [renderedFilmsCount, films]);
 
   useEffect(() => {
     setRenderedFilmsCount(FILM_COUNT_PER_STEP);
+    return () => {setRenderedFilmsCount(0);
+    };
   }, [activeGenre]);
 
   function handleShowMoreButtonClick() {

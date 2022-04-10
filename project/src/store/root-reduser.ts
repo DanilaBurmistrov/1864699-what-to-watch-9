@@ -4,6 +4,6 @@ import { filmData } from './film-data/film-data';
 import { userData } from './user-data/user-data';
 
 export const rootReducer = combineReducers({
-  [NameSpace.data]: filmData.reducer,
-  [NameSpace.user]: userData.reducer,
+  [NameSpace.Data]: filmData.reducer,
+  [NameSpace.User]: userData.reducer,
 });

@@ -1,7 +1,8 @@
-import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
+import { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
 import { MIN_LENGTH_TEXT, MAX_LENGTH_TEXT, STARS_ARRAY } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { sendReview } from '../../store/api-action';
+import { reviewSendStatus } from '../../store/film-data/film-data';
 import { getIsDisabledForm, getReviewSendStatus } from '../../store/selectors';
 
 
@@ -22,12 +23,16 @@ export default function AddCommentForm({filmId}: AddCommentFormProps): JSX.Eleme
 
   const dispatch = useAppDispatch();
 
-  const commentChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+  useEffect (() => () => {
+    dispatch(reviewSendStatus(''));
+  }, [dispatch]);
+
+  const handleCommentChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
     const {value} = evt.target;
     setComment(value);
   };
 
-  const ratingChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const {value} = evt.target;
     setRating(+value);
   };
@@ -44,7 +49,7 @@ export default function AddCommentForm({filmId}: AddCommentFormProps): JSX.Eleme
           <div className="rating__stars">
             {STARS_ARRAY.map((element) => (
               <Fragment key={element}>
-                <input className="rating__input" id={`star-${element}`} type="radio" name="rating" value={element} onChange={ratingChangeHandler}/>
+                <input className="rating__input" id={`star-${element}`} type="radio" name="rating" value={element} onChange={handleRatingChange}/>
                 <label className="rating__label" htmlFor={`star-${element}`}>Rating {element}</label>
               </Fragment>
             ))}
@@ -53,7 +58,7 @@ export default function AddCommentForm({filmId}: AddCommentFormProps): JSX.Eleme
 
         <div className="add-review__text">
           <textarea disabled={isDisabledForm}
-            onChange={commentChangeHandler}
+            onChange={handleCommentChange}
             className="add-review__textarea"
             name="review-text" id="review-text"
             placeholder="Review text"

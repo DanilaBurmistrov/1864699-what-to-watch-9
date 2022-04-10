@@ -32,9 +32,8 @@ export default function MyList(): JSX.Element {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <div className="catalog__films-list">
-          <MoviesList films = {myListFilms}/>
-        </div>
+        <MoviesList films = {myListFilms}/>
+
       </section>
 
       <footer className="page-footer">

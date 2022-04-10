@@ -3,6 +3,7 @@ import MoviesList from '../movies-list/movies-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchSimilarFilms } from '../../store/api-action';
 import { getSimilarFilms } from '../../store/selectors';
+import { MAX_SIMILAR_FILMS } from '../../const';
 
 type MoreLikeThisFilmProps = {
   filmId: number;
@@ -18,7 +19,7 @@ export default function MoreLikeThisFilm({filmId}: MoreLikeThisFilmProps): JSX.E
 
   },[dispatch, filmId]);
 
-  const similarFilms = useAppSelector(getSimilarFilms).filter((film) => film.id !== filmId).slice(0, 4);
+  const similarFilms = useAppSelector(getSimilarFilms).filter((film) => film.id !== filmId).slice(0, MAX_SIMILAR_FILMS);
 
   return (
     <section className="catalog catalog--like-this">

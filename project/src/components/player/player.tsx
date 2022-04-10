@@ -6,6 +6,7 @@ import { useAppSelector } from '../../hooks';
 import { fetchFilm } from '../../store/api-action';
 import { getFilmById } from '../../store/selectors';
 import { getVideoTimeLeft } from '../../utils';
+import { LoadingSpinner } from '../loading-spinner/loading-spinner';
 
 
 export default function Player(): JSX.Element {
@@ -28,6 +29,20 @@ export default function Player(): JSX.Element {
   const [videoProgress, setVideoProgress] = useState(0);
 
   const videoPlayerRef = useRef() as MutableRefObject<HTMLVideoElement>;
+
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
+
+  if(videoPlayerRef.current) {
+    const video = videoPlayerRef.current;
+
+    video.onloadstart = () => {
+      setIsVideoLoading(true);
+    };
+
+    video.onloadeddata = () => {
+      setIsVideoLoading(false);
+    };
+  }
 
   useEffect(() => {
     setVideoFullTime(videoPlayerRef.current.duration);
@@ -69,7 +84,7 @@ export default function Player(): JSX.Element {
     browserHistory.back();
   }
 
-  function toggleFullScreen() {
+  function handleFullScreen() {
 
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -81,6 +96,8 @@ export default function Player(): JSX.Element {
   return (
     <div className="player">
       <video ref={videoPlayerRef} src={film?.videoLink} muted className="player__video" poster={film?.posterImage}></video>
+
+      {isVideoLoading ? <LoadingSpinner /> : ''}
 
       <button type="button" className="player__exit"
         onClick={handlePlayerExit}
@@ -115,7 +132,7 @@ export default function Player(): JSX.Element {
 
           <div className="player__name">{film?.name}</div>
 
-          <button type="button" className="player__full-screen" onClick={toggleFullScreen}>
+          <button type="button" className="player__full-screen" onClick={handleFullScreen}>
             <svg viewBox="0 0 27 27" width="27" height="27">
               <use xlinkHref="#full-screen"></use>
             </svg>

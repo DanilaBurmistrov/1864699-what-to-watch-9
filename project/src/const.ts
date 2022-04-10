@@ -14,6 +14,10 @@ export const MAX_RATING_STARS = 10;
 
 export const STARS_ARRAY = new Array(MAX_RATING_STARS).fill(0).map((_, index) => String(MAX_RATING_STARS - index));
 
+export const MAX_SIMILAR_FILMS = 4;
+
+export const MAX_GENRES = 9;
+
 export enum AppRoute {
   Main = '/',
   SignIn = '/login',
@@ -21,6 +25,7 @@ export enum AppRoute {
   MoviePage = '/films/:id',
   AddReview = '/films/:id/review',
   Player = '/player/:id',
+  ServerError= '/500',
 }
 
 export enum AuthorizationStatus {
@@ -46,8 +51,8 @@ export enum HttpCode {
 }
 
 export enum NameSpace {
-  data = 'DATA',
-  user = 'USER',
+  Data = 'DATA',
+  User = 'USER',
 }
 
 export enum TabType {

@@ -10,6 +10,7 @@ import PrivateRoute from '../private-route/private-route';
 import { browserHistory } from '../../browser-history';
 import HistoryRouter from '../history-router/history-router';
 import PageNotFound from '../page-not-found/page-not-found';
+import InternalServerError from '../internal-server-error/internal-server-error';
 
 export default function App(): JSX.Element {
 
@@ -43,6 +44,10 @@ export default function App(): JSX.Element {
         <Route
           path={AppRoute.Player}
           element={<Player />}
+        />
+        <Route
+          path={AppRoute.ServerError}
+          element={<InternalServerError /> }
         />
         <Route
           path="*"

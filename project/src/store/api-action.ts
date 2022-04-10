@@ -11,8 +11,14 @@ import { requireAuthorization, saveUserData } from './user-data/user-data';
 export const fetchFilms = createAsyncThunk<void, undefined, {extra: Api}>(
   'data/fetchFilms',
   async (_:undefined, {dispatch, extra}) => {
-    const {data} = await extra.get<Film[]>(APIRoute.Films);
-    dispatch(loadFilms(data));
+    try {
+      const {data} = await extra.get<Film[]>(APIRoute.Films);
+      dispatch(setError(''));
+      dispatch(loadFilms(data));
+    } catch (error) {
+      handleError(error);
+      dispatch(redirectToRoute('/500'));
+    }
   },
 );
 
@@ -27,8 +33,12 @@ export const fetchFilm = createAsyncThunk<void, number, {extra: Api}>(
 export const fetchPromoFilm = createAsyncThunk<void, undefined, {extra: Api}>(
   'data/fetchPromoFilm',
   async (_, {dispatch, extra: api}) => {
-    const {data} = await api.get<Film>(APIRoute.PromoFilm);
-    dispatch(loadPromoFilm(data));
+    try {
+      const {data} = await api.get<Film>(APIRoute.PromoFilm);
+      dispatch(loadPromoFilm(data));
+    } catch (error) {
+      handleError(error);
+    }
   },
 );
 
